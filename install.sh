@@ -27,3 +27,7 @@ fi
 if [ ! -d /root/boat ]; then
   git clone git@github.com:ulysse314/boat.git
 fi
+
+cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
+cat /tmp/crontab > /etc/crontab
+cat /root/scripts/crontab >> /etc/crontab
