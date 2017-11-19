@@ -15,14 +15,26 @@ function update_git {
   popd
 }
 
-if [ "$1" == "" ]; then
-    echo "No name"
-    exit 1
+if [ ! -f /etc/ulysse314/script ]; then
+  echo "Need /etc/ulysse314/script"
+  exit 1
+fi
+if [ ! -f /etc/ulysse314/ulysse314.ini ]; then
+  echo "Need /etc/ulysse314/ulysse314.ini"
+  exit 1
+fi
+if [ -f  /etc/ulysse314/name ]; then
+  NAME=`cat /etc/ulysse314/name`
+elif [ "$1" == "" ]; then
+  echo "No name"
+  exit 1
+else
+  NAME="$1"
+  echo "${NAME}" > /etc/ulysse314/name
+  echo "${NAME}" > /etc/hostname
+  hostname "${NAME}"
 fi
 
-NAME="$1"
-echo "${NAME}" > /etc/hostname
-hostname "${NAME}"
 apt-get update
 apt-get upgrade -y
 apt-get install emacs-nox python3 autossh screen git
