@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 function update_git {
   REPOSITORY="$1"
   pushd .
