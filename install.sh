@@ -11,6 +11,7 @@ hostname "${NAME}"
 apt-get update
 apt-get upgrade -y
 apt-get install emacs-nox python3 autossh screen git
+userdel -r pi
 
 if [ ! -f /root/.ssh/id_rsa ]; then
   ssh-keygen -f /root/.ssh/id_rsa -N ""
