@@ -49,7 +49,7 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 git config --global user.name "${NAME}"
 git config --global user.email "${NAME}"
 update_git scripts
-scripts boat
+update_git boat
 
 cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
