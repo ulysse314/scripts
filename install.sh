@@ -16,3 +16,5 @@ ssh-keygen -f /root/.ssh/id_rsa -N ""
 git config --global user.name "telemaque"
 git config --global user.email "telemaque"
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
+git clone git@github.com:ulysse314/scripts.git
+git clone git@github.com:ulysse314/boat.git
