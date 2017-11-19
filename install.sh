@@ -21,5 +21,9 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 git config --global user.name "${NAME}"
 git config --global user.email "${NAME}"
 cd /root
-git clone git@github.com:ulysse314/scripts.git
-git clone git@github.com:ulysse314/boat.git
+if [ ! -d /root/scripts ]; then
+  git clone git@github.com:ulysse314/scripts.git
+fi
+if [ ! -d /root/boat ]; then
+  git clone git@github.com:ulysse314/boat.git
+fi
