@@ -1,5 +1,18 @@
 #!/bin/bash
 
+function update_git {
+  REPOSITORY="$1"
+  pushd .
+  cd /root
+  if [ ! -d "/root/${REPOSITORY}" ]; then
+    git clone "git@github.com:ulysse314/${REPOSITORY}.git"
+  else
+    cd "${REPOSITORY}"
+    git pull --rebase
+  fi
+  popd
+}
+
 if [ "$1" == "" ]; then
     echo "No name"
     exit 1
@@ -21,13 +34,8 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 
 git config --global user.name "${NAME}"
 git config --global user.email "${NAME}"
-cd /root
-if [ ! -d /root/scripts ]; then
-  git clone git@github.com:ulysse314/scripts.git
-fi
-if [ ! -d /root/boat ]; then
-  git clone git@github.com:ulysse314/boat.git
-fi
+update_git scripts
+scripts boat
 
 cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
