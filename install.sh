@@ -15,17 +15,6 @@ function update_git {
   popd
 }
 
-if [ -f  /etc/ulysse314/name ]; then
-  BOAT_NAME=`cat /etc/ulysse314/name`
-elif [ "$1" == "" ]; then
-  echo "No name"
-  exit 1
-else
-  BOAT_NAME="$1"
-  echo "${BOAT_NAME}" > /etc/ulysse314/name
-  echo "${BOAT_NAME}" > /etc/hostname
-  hostname "${BOAT_NAME}"
-fi
 if [ ! -f /root/.ssh/id_rsa ]; then
   ssh-keygen -f /root/.ssh/id_rsa -N ""
 fi
@@ -50,6 +39,17 @@ fi
 if [ ! -f /etc/ulysse314/ulysse314.ini ]; then
   echo "Need /etc/ulysse314/ulysse314.ini"
   exit 1
+fi
+if [ -f  /etc/ulysse314/name ]; then
+  BOAT_NAME=`cat /etc/ulysse314/name`
+elif [ "$1" == "" ]; then
+  echo "No name"
+  exit 1
+else
+  BOAT_NAME="$1"
+  echo "${BOAT_NAME}" > /etc/ulysse314/name
+  echo "${BOAT_NAME}" > /etc/hostname
+  hostname "${BOAT_NAME}"
 fi
 
 userdel -r pi
