@@ -31,3 +31,6 @@ rsync_dir "/boot"
 
 update_git scripts
 update_git boat
+
+cp /root/scripts/authorized_keys /root/.ssh/authorized_keys
+rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
