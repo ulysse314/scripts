@@ -10,6 +10,14 @@ rsync_dir() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${NAME}/"
 }
 
+function update_git {
+  REPOSITORY="$1"
+  pushd .
+  cd "/root/${REPOSITORY}"
+  git pull --rebase
+  popd
+}
+
 if [ "$1" != "" ];  then
     echo "sleep $1"
     sleep "$1"
@@ -20,3 +28,6 @@ apt list --installed > "${BACKUP_FOLDER}packages.txt"
 rsync_dir "/root"
 rsync_dir "/home/boatpi"
 rsync_dir "/boot"
+
+update_git scripts
+update_git boat
