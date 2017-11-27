@@ -25,6 +25,10 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y emacs-nox python3 autossh screen git arduino-mk
 
+if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != ""] && [ "$4" != ""]; then
+  ssh-keyscan -p "$4" "$3" | grep -v "\#" > /root/.ssh/known_hosts
+  ssh-keyscan "github.com" | grep -v "\#" >> /root/.ssh/known_hosts
+fi
 if [ ! -f /etc/ulysse314/script ]; then
   echo "Need /etc/ulysse314/script"
   exit 1
