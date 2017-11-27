@@ -29,6 +29,9 @@ if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != ""] && [ "$4" != ""]; then
   ssh-keyscan -p "$4" "$3" | grep -v "\#" > /root/.ssh/known_hosts
   ssh-keyscan "github.com" | grep -v "\#" >> /root/.ssh/known_hosts
 fi
+if [ ! -d /etc/ulysse314 ] && [ "$2" != ""] && [ "$3" != ""] && [ "$4" != ""]; then
+  scp -r -P "$4" "$2@$3:ulysse314" /etc
+fi
 if [ ! -f /etc/ulysse314/script ]; then
   echo "Need /etc/ulysse314/script"
   exit 1
