@@ -1,4 +1,5 @@
 #!/bin/bash
+# install.sh boat_name backup_user backup_server backup_port public_key_server
 
 set -x
 
@@ -21,7 +22,7 @@ if [ ! -f /root/.ssh/id_rsa ]; then
     exit 1
   fi
   ssh-keygen -f /root/.ssh/id_rsa -N "" -C "$1"
-  curl --data "`cat /root/.ssh/id_rsa.pub`" "http://$5/public_key"
+  curl --data "`cat /root/.ssh/id_rsa.pub`" "http://$5/public_key" > /dev/null
 fi
 cat /root/.ssh/id_rsa.pub
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
