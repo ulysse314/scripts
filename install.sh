@@ -16,7 +16,12 @@ function update_git {
 }
 
 if [ ! -f /root/.ssh/id_rsa ]; then
+  if [ "$5" != "" ]; then
+    echo "No server to send public key"
+    exit 1
+  fi
   ssh-keygen -f /root/.ssh/id_rsa -N "" -C "$1"
+  curl --data "`cat /root/.ssh/id_rsa.pub`" "http://$5/public_key"
 fi
 cat /root/.ssh/id_rsa.pub
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
