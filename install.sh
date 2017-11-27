@@ -15,6 +15,16 @@ function update_git {
   popd
 }
 
+if [ ! -f /root/.ssh/id_rsa ]; then
+  ssh-keygen -f /root/.ssh/id_rsa -N ""
+fi
+cat /root/.ssh/id_rsa.pub
+curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
+
+apt-get update
+apt-get upgrade -y
+apt-get install -y emacs-nox python3 autossh screen git arduino-mk
+
 if [ ! -f /etc/ulysse314/script ]; then
   echo "Need /etc/ulysse314/script"
   exit 1
@@ -35,16 +45,7 @@ else
   hostname "${BOAT_NAME}"
 fi
 
-apt-get update
-apt-get upgrade -y
-apt-get install -y emacs-nox python3 autossh screen git arduino-mk
 userdel -r pi
-
-if [ ! -f /root/.ssh/id_rsa ]; then
-  ssh-keygen -f /root/.ssh/id_rsa -N ""
-fi
-cat /root/.ssh/id_rsa.pub
-curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
 
 git config --global user.name "${BOAT_NAME}"
 git config --global user.email "${BOAT_NAME}"
