@@ -31,12 +31,12 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict
 
-if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != ""] && [ "$4" != ""] && [ "$5" != "" ]; then
+if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != "" ] && [ "$4" != "" ] && [ "$5" != "" ]; then
   ssh-keyscan -p "$4" "$3" | grep -v "\#" > /root/.ssh/known_hosts
   ssh-keyscan "$5" | grep -v "\#" >> /root/.ssh/known_hosts
   ssh-keyscan "github.com" | grep -v "\#" >> /root/.ssh/known_hosts
 fi
-if [ ! -d /etc/ulysse314 ] && [ "$2" != ""] && [ "$3" != ""] && [ "$4" != ""]; then
+if [ ! -d /etc/ulysse314 ] && [ "$2" != "" ] && [ "$3" != "" ] && [ "$4" != "" ]; then
   scp -r -P "$4" "$2@$3:ulysse314" /etc
 fi
 if [ ! -f /etc/ulysse314/script ]; then
