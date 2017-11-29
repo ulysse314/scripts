@@ -29,7 +29,7 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y emacs-nox python3 autossh screen git arduino-mk
+apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict
 
 if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != ""] && [ "$4" != ""] && [ "$5" != "" ]; then
   ssh-keyscan -p "$4" "$3" | grep -v "\#" > /root/.ssh/known_hosts
