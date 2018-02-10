@@ -5,10 +5,11 @@ set -x
 
 function update_git {
   REPOSITORY="$1"
+  URL="git@github.com:ulysse314/${REPOSITORY}.git"
   pushd .
   cd /root
   if [ ! -d "/root/${REPOSITORY}" ]; then
-    git clone "git@github.com:ulysse314/${REPOSITORY}.git"
+    git clone "${URL}"
   else
     cd "${REPOSITORY}"
     git pull --rebase
@@ -29,7 +30,9 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict gpsd python3-psutil
+apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pyp
+pip3 install pyserial-asyncio
+pip3 install adafruit-pca9685
 
 if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != "" ] && [ "$4" != "" ] && [ "$5" != "" ]; then
   ssh-keyscan -p "$4" "$3" | grep -v "\#" > /root/.ssh/known_hosts
@@ -43,8 +46,8 @@ if [ ! -f /etc/ulysse314/script ]; then
   echo "Need /etc/ulysse314/script"
   exit 1
 fi
-if [ ! -f /etc/ulysse314/ulysse314.ini ]; then
-  echo "Need /etc/ulysse314/ulysse314.ini"
+if [ ! -f /etc/ulysse314/ulysse314.json ]; then
+  echo "Need /etc/ulysse314/ulysse314.json"
   exit 1
 fi
 if [ -f  /etc/ulysse314/name ]; then
