@@ -37,7 +37,7 @@ if [ ! -f /root/.ssh/id_rsa ]; then
     exit 1
   fi
   ssh-keygen -f /root/.ssh/id_rsa -N "" -C "${BOAT_NAME}"
-  curl -L --data "`cat /root/.ssh/id_rsa.pub`" "http://${PUBLIC_KEY_SERVER}/public_key" > /dev/null
+  curl -L --data "`cat /root/.ssh/id_rsa.pub`" "http://www.${PUBLIC_KEY_SERVER}/public_key" > /dev/null
 fi
 cat /root/.ssh/id_rsa.pub
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
