@@ -5,7 +5,7 @@ set -x
 
 function update_git {
   REPOSITORY="$1"
-  URL="git@github.com:ulysse314/${REPOSITORY}.git"
+  URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
   cd /root
   if [ ! -d "/root/${REPOSITORY}" ]; then
