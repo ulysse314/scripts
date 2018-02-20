@@ -50,19 +50,19 @@ pip3 install adafruit-pca9685
 
 if [ ! -f /root/.ssh/known_hosts ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ] && [ "${PUBLIC_KEY_SERVER}" != "" ]; then
   ssh-keyscan -p "${BACKUP_PORT}" "${BACKUP_SERVER}" | grep -v "\#" > /root/.ssh/known_hosts
-  ssh-keyscan "${PUBLIC_KEY_SERVER}" | grep -v "\#" >> /root/.ssh/known_hosts
-  ssh-keyscan "github.com" | grep -v "\#" >> /root/.ssh/known_hosts
 fi
-if [ ! -d /etc/ulysse314 ] && [ "${BACKUP_USER}" != "" ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ]; then
-  scp -r -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" /etc
+if [ ! -d /etc/ulysse314 ]; then
+  mkdir /etc/ulysse314
 fi
 if [ ! -f /etc/ulysse314/script ]; then
-  echo "Need /etc/ulysse314/script"
-  exit 1
-fi
-if [ ! -f /etc/ulysse314/ulysse314.json ]; then
-  echo "Need /etc/ulysse314/ulysse314.json"
-  exit 1
+  if [ "${BACKUP_USER}" != "" ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ]; then
+    echo "BACKUP_USER='${BACKUP_USER}'" > /etc/ulysse314/script
+    echo "BACKUP_SERVER='${BACKUP_SERVER}'" >> /etc/ulysse314/script
+    echo "BACKUP_PORT='${BACKUP_PORT}'" >> /etc/ulysse314/script
+  else
+    echo "Needs /etc/ulysse314/script"
+    exit 1
+  fi
 fi
 if [ ! -f /etc/ulysse314/name ]; then
   echo "${BOAT_NAME}" > /etc/ulysse314/name
