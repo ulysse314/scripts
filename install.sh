@@ -18,7 +18,7 @@ function update_git {
 }
 
 if [ ! -f /root/.ssh/id_rsa ]; then
-  if [ "$5" != "" ]; then
+  if [ "$5" == "" ]; then
     echo "No server to send public key"
     exit 1
   fi
