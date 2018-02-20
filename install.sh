@@ -17,13 +17,27 @@ function update_git {
   popd
 }
 
+BOAT_NAME="$1"
+BACKUP_USER="$2"
+BACKUP_SERVER="$3"
+BACKUP_PORT="$4"
+PUBLIC_KEY_SERVER="$5"
+
+if [ "${BOAT_NAME}" == "" ]; then
+  if [ ! -f /etc/ulysse314/name ]; then
+    echo "No name"
+    exit 1
+  fi
+  BOAT_NAME=`cat /etc/ulysse314/name`
+fi
+
 if [ ! -f /root/.ssh/id_rsa ]; then
-  if [ "$5" == "" ]; then
+  if [ "${PUBLIC_KEY_SERVER}" == "" ]; then
     echo "No server to send public key"
     exit 1
   fi
-  ssh-keygen -f /root/.ssh/id_rsa -N "" -C "$1"
-  curl -L --data "`cat /root/.ssh/id_rsa.pub`" "http://$5/public_key" > /dev/null
+  ssh-keygen -f /root/.ssh/id_rsa -N "" -C "${BOAT_NAME}"
+  curl -L --data "`cat /root/.ssh/id_rsa.pub`" "http://${PUBLIC_KEY_SERVER}/public_key" > /dev/null
 fi
 cat /root/.ssh/id_rsa.pub
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
@@ -34,13 +48,13 @@ apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aioht
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 
-if [ ! -f /root/.ssh/known_hosts ] && [ "$3" != "" ] && [ "$4" != "" ] && [ "$5" != "" ]; then
-  ssh-keyscan -p "$4" "$3" | grep -v "\#" > /root/.ssh/known_hosts
-  ssh-keyscan "$5" | grep -v "\#" >> /root/.ssh/known_hosts
+if [ ! -f /root/.ssh/known_hosts ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ] && [ "${PUBLIC_KEY_SERVER}" != "" ]; then
+  ssh-keyscan -p "${BACKUP_PORT}" "${BACKUP_SERVER}" | grep -v "\#" > /root/.ssh/known_hosts
+  ssh-keyscan "${PUBLIC_KEY_SERVER}" | grep -v "\#" >> /root/.ssh/known_hosts
   ssh-keyscan "github.com" | grep -v "\#" >> /root/.ssh/known_hosts
 fi
-if [ ! -d /etc/ulysse314 ] && [ "$2" != "" ] && [ "$3" != "" ] && [ "$4" != "" ]; then
-  scp -r -P "$4" "$2@$3:ulysse314" /etc
+if [ ! -d /etc/ulysse314 ] && [ "${BACKUP_USER}" != "" ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ]; then
+  scp -r -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" /etc
 fi
 if [ ! -f /etc/ulysse314/script ]; then
   echo "Need /etc/ulysse314/script"
@@ -50,13 +64,7 @@ if [ ! -f /etc/ulysse314/ulysse314.json ]; then
   echo "Need /etc/ulysse314/ulysse314.json"
   exit 1
 fi
-if [ -f  /etc/ulysse314/name ]; then
-  BOAT_NAME=`cat /etc/ulysse314/name`
-elif [ "$1" == "" ]; then
-  echo "No name"
-  exit 1
-else
-  BOAT_NAME="$1"
+if [ ! -f /etc/ulysse314/name ]; then
   echo "${BOAT_NAME}" > /etc/ulysse314/name
   echo "${BOAT_NAME}" > /etc/hostname
   hostname "${BOAT_NAME}"
