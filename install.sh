@@ -56,7 +56,8 @@ if [ ! -d /etc/ulysse314 ]; then
 fi
 if [ ! -f /etc/ulysse314/script ]; then
   if [ "${BACKUP_USER}" != "" ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ]; then
-    echo "BACKUP_USER='${BACKUP_USER}'" > /etc/ulysse314/script
+    echo "NAME=`cat /etc/ulysse314/name`" > /etc/ulysse314/script
+    echo "BACKUP_USER='${BACKUP_USER}'" >> /etc/ulysse314/script
     echo "BACKUP_SERVER='${BACKUP_SERVER}'" >> /etc/ulysse314/script
     echo "BACKUP_PORT='${BACKUP_PORT}'" >> /etc/ulysse314/script
   else
