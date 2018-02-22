@@ -44,7 +44,7 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin
+apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 
@@ -87,5 +87,6 @@ cat /tmp/crontab > /etc/crontab
 cat /root/scripts/crontab >> /etc/crontab
 
 ln -s /root/scripts/munin_plugin.py /etc/munin/plugins/
+ln -s /var/cache/munin/www /var/www/html/munin
 
 /root/scripts/backup.sh
