@@ -56,7 +56,7 @@ if [ ! -d /etc/ulysse314 ]; then
 fi
 if [ ! -f /etc/ulysse314/script ]; then
   if [ "${BACKUP_USER}" != "" ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ]; then
-    echo "NAME=`cat /etc/ulysse314/name`" > /etc/ulysse314/script
+    echo 'NAME=`cat /etc/ulysse314/name`' > /etc/ulysse314/script
     echo "BACKUP_USER='${BACKUP_USER}'" >> /etc/ulysse314/script
     echo "BACKUP_SERVER='${BACKUP_SERVER}'" >> /etc/ulysse314/script
     echo "BACKUP_PORT='${BACKUP_PORT}'" >> /etc/ulysse314/script
@@ -73,6 +73,9 @@ fi
 
 userdel -r pi
 useradd -m -G sudo ulysse314
+mkdir /home/ulysse314/.ssh
+chown ulysse314:ulysse314 /home/ulysse314/.ssh
+chmod 0700 /home/ulysse314/.ssh
 
 git config --global user.name "${BOAT_NAME}"
 git config --global user.email "${BOAT_NAME}"
