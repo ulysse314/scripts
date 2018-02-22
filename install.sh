@@ -80,3 +80,5 @@ update_git boat
 cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
 cat /root/scripts/crontab >> /etc/crontab
+
+/root/scripts/backup.sh
