@@ -72,6 +72,7 @@ if [ ! -f /etc/ulysse314/name ]; then
 fi
 
 userdel -r pi
+useradd -m -G sudo ulysse314
 
 git config --global user.name "${BOAT_NAME}"
 git config --global user.email "${BOAT_NAME}"
