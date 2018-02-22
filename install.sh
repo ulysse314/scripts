@@ -86,7 +86,7 @@ cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
 cat /root/scripts/crontab >> /etc/crontab
 
-ln -s /root/scripts/munin_plugin.py /etc/munin/plugins/
+ln -s /root/scripts/munin_plugin.py /etc/munin/plugins/ulysse314.py
 ln -s /var/cache/munin/www /var/www/html/munin
 
 /root/scripts/backup.sh
