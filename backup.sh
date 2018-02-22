@@ -23,15 +23,15 @@ if [ "$1" != "" ];  then
     sleep "$1"
 fi
 
-rsync -aqv --delete-after /etc "${BACKUP_FOLDER}"
-apt list --installed > "${BACKUP_FOLDER}packages.txt"
-rsync_dir "/root"
-rsync_dir "/home/boatpi"
-rsync_dir "/boot"
-
 update_git scripts
 update_git boat
 
 cp /root/scripts/authorized_keys /root/.ssh/authorized_keys
 scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
 rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
+
+rsync -aqv --delete-after /etc "${BACKUP_FOLDER}"
+apt list --installed > "${BACKUP_FOLDER}packages.txt"
+rsync_dir "/root"
+rsync_dir "/home/boatpi"
+rsync_dir "/boot"
