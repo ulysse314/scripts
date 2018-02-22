@@ -33,5 +33,5 @@ rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_
 rsync -aqv --delete-after /etc "${BACKUP_FOLDER}"
 apt list --installed > "${BACKUP_FOLDER}packages.txt"
 rsync_dir "/root"
-rsync_dir "/home/boatpi"
+rsync_dir "/home/ulysse314"
 rsync_dir "/boot"
