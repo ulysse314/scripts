@@ -27,6 +27,8 @@ update_git scripts
 update_git boat
 
 cp /root/scripts/authorized_keys /root/.ssh/authorized_keys
+cp /root/scripts/authorized_keys /home/ulysse314/.ssh/authorized_keys
+chown ulysse314:ulysse314 /home/ulysse314/.ssh/authorized_keys
 scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
 rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
 
