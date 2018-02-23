@@ -7,8 +7,8 @@ function update_git {
   REPOSITORY="$1"
   URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
-  cd /root
-  if [ ! -d "/root/${REPOSITORY}" ]; then
+  cd /home/ulysse314
+  if [ ! -d "/home/ulysse314/${REPOSITORY}" ]; then
     git clone "${URL}"
   else
     cd "${REPOSITORY}"
@@ -84,9 +84,9 @@ update_git boat
 
 cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
-cat /root/scripts/crontab >> /etc/crontab
+cat /home/ulysse314/scripts/crontab >> /etc/crontab
 
-ln -s /root/scripts/munin_plugin.py /etc/munin/plugins/ulysse314.py
+ln -s /home/ulysse314/scripts/munin_plugin.py /etc/munin/plugins/ulysse314.py
 ln -s /var/cache/munin/www /var/www/html/munin
 
-/root/scripts/backup.sh
+/home/ulysse314/scripts/backup.sh
