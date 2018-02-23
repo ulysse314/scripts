@@ -9,7 +9,7 @@ import re
 import socket
 import sys
 
-sys.path.append("/root/boat")
+sys.path.append("/home/ulysse314/boat")
 
 import config
 
