@@ -1,3 +1,3 @@
-@reboot         root  /root/scripts/network.sh       # ULYSSE314
-@reboot         root  /root/scripts/backup.sh 30     # ULYSSE314
-0  4	* * *	root  /root/scripts/backup.sh        # ULYSSE314
+@reboot         root  /home/ulysse314/scripts/network.sh       # ULYSSE314
+@reboot         root  /home/ulysse314/scripts/backup.sh 30     # ULYSSE314
+0  4	* * *	root  /home/ulysse314/scripts/backup.sh        # ULYSSE314
