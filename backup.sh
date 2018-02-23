@@ -7,7 +7,7 @@ source /etc/ulysse314/script
 BACKUP_FOLDER='/root/system/'
 
 rsync_dir() {
-  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${NAME}/"
+  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${BOAT_NAME}/"
 }
 
 function update_git {
