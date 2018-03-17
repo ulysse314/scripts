@@ -6,7 +6,7 @@ source /etc/ulysse314/script
 
 BACKUP_FOLDER='/home/ulysse314/system/'
 
-rsync_dir() {
+rsync_for_backup() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${BOAT_NAME}/"
 }
 
@@ -34,6 +34,6 @@ rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_
 
 rsync -aqv --delete-after /etc "${BACKUP_FOLDER}"
 apt list --installed > "${BACKUP_FOLDER}packages.txt"
-rsync_dir "/root"
-rsync_dir "/home/ulysse314"
-rsync_dir "/boot"
+rsync_for_backup "/root"
+rsync_for_backup "/home/ulysse314"
+rsync_for_backup "/boot"
