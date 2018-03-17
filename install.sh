@@ -72,10 +72,14 @@ if [ ! -f /etc/ulysse314/name ]; then
 fi
 
 userdel -r pi
-useradd -m -G sudo ulysse314
-mkdir /home/ulysse314/.ssh
-chown ulysse314:ulysse314 /home/ulysse314/.ssh
-chmod 0700 /home/ulysse314/.ssh
+if [ ! -d /home/ulysse314 ]; then
+  useradd -m -G sudo ulysse314
+fi
+if [ ! -d /home/ulysse314/.ssh ]; then
+  mkdir /home/ulysse314/.ssh
+  chown ulysse314:ulysse314 /home/ulysse314/.ssh
+  chmod 0700 /home/ulysse314/.ssh
+fi
 
 git config --global user.name "${BOAT_NAME}"
 git config --global user.email "${BOAT_NAME}"
@@ -86,7 +90,11 @@ cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
 cat /home/ulysse314/scripts/crontab >> /etc/crontab
 
-ln -s /home/ulysse314/scripts/munin_plugin.py /etc/munin/plugins/ulysse314.py
-ln -s /var/cache/munin/www /var/www/html/munin
+if [ ! -f /etc/munin/plugins/ulysse314.py ]; then
+  ln -s /home/ulysse314/scripts/munin_plugin.py /etc/munin/plugins/ulysse314.py
+fi
+if [ ! -f /var/www/html/munin ]; then
+  ln -s /var/cache/munin/www /var/www/html/munin
+fi
 
 /home/ulysse314/scripts/backup.sh
