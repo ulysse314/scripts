@@ -18,6 +18,10 @@ function update_git {
   popd
 }
 
+update_dir() {
+  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "/home/ulysse314/$1"
+}
+
 if [ "$1" != "" ];  then
     echo "sleep $1"
     sleep "$1"
@@ -25,6 +29,7 @@ fi
 
 update_git scripts
 update_git boat
+update_dir arduino
 
 cp /home/ulysse314/scripts/authorized_keys /root/.ssh/authorized_keys
 cp /home/ulysse314/scripts/authorized_keys /home/ulysse314/.ssh/authorized_keys
