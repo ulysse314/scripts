@@ -19,7 +19,7 @@ function update_git {
 }
 
 update_dir() {
-  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "/home/ulysse314/$1"
+  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "/home/ulysse314/"
 }
 
 if [ "$1" != "" ];  then
