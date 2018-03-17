@@ -44,7 +44,7 @@ curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_k
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y emacs-nox python3 autossh screen git arduino-mk python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
+apt-get install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 
