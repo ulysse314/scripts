@@ -10,11 +10,17 @@ rsync_for_backup() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${BOAT_NAME}/"
 }
 
-function update_git {
+update_git() {
   REPOSITORY="$1"
+  URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
-  cd "/home/ulysse314/${REPOSITORY}"
-  git pull --rebase
+  cd /home/ulysse314
+  if [ ! -d "/home/ulysse314/${REPOSITORY}" ]; then
+    git clone "${URL}"
+  else
+    cd "${REPOSITORY}"
+    git pull --rebase
+  fi
   popd
 }
 
@@ -26,6 +32,9 @@ if [ "$1" != "" ];  then
     echo "sleep $1"
     sleep "$1"
 fi
+
+apt-get update
+apt-get upgrade -y
 
 update_git scripts
 update_git boat
