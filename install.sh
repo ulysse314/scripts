@@ -42,8 +42,6 @@ fi
 cat /root/.ssh/id_rsa.pub
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
 
-apt-get update
-apt-get upgrade -y
 apt-get install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
@@ -84,17 +82,10 @@ fi
 git config --global user.name "${BOAT_NAME}"
 git config --global user.email "${BOAT_NAME}"
 update_git scripts
-update_git boat
 
-cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
-cat /tmp/crontab > /etc/crontab
-cat /home/ulysse314/scripts/crontab >> /etc/crontab
-
-if [ ! -f /etc/munin/plugins/ulysse314.py ]; then
-  ln -s /home/ulysse314/scripts/munin_plugin.py /etc/munin/plugins/ulysse314.py
-fi
 if [ ! -f /var/www/html/munin ]; then
   ln -s /var/cache/munin/www /var/www/html/munin
 fi
 
 /home/ulysse314/scripts/backup.sh
+/home/ulysse314/scripts/update_install.sh
