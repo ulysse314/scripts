@@ -8,7 +8,7 @@ DEBUG_FILE='/tmp/test'
 SSH_WIFI="-R *:${SSH_WIFI_PORT}:127.0.0.1:22"
 SSH_4G="-R *:${SSH_4G_PORT}:127.0.0.1:22"
 
-/home/ulysse314/scripts/update_install.bash
+/home/ulysse314/scripts/update_install.sh
 AUTOSSH_LOGLEVEL=7 AUTOSSH_LOGFILE='/tmp/wifi_autossh.log' /usr/bin/autossh -M 0 -v -f -N -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes ${SSH_WIFI} -p "${TUNNEL_PORT}" "${TUNNEL_USER}@${TUNNEL_SERVER}"
 echo "ok" > "${DEBUG_FILE}"
 lsusb >> "${DEBUG_FILE}"
