@@ -96,10 +96,10 @@ elif len(sys.argv) == 2 and sys.argv[1] == "values":
   pprint.pprint(j)
 else:
   print("multigraph ulysse314_temperature")
-  print("dof.value " + str(j["dof"]["temp"]))
+  printValue("dof.value", "dof", "temp")
   print("pi.value " + str(j["pi"]["temp"]))
-  print("leftmotor.value " + str(j["motor"]["lefttemp"]))
-  print("rightmotor.value " + str(j["motor"]["righttemp"]))
+  printValue("leftmotor.value", "motor", "lefttemp")
+  printValue("rightmotor.value", "motor", "righttemp")
   printValue("battery.value", "battery", "temp")
   print("")
   print("multigraph ulysse314_battery")
