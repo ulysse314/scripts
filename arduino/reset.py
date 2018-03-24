@@ -8,10 +8,10 @@ import sys
 import traceback
 
 def default_port():
-  return '/dev/ttyACM0'
+  return 'ttyACM0'
 
 def reset_arduino_on_port(port = None):
-  port = default_port() if port == None else port
+  port = '/dev/{}'.format(default_port() if port == None else port)
   with serial.Serial(port, 1200) as ser:
     ser.setDTR(False)
 
