@@ -12,10 +12,11 @@ rsync_for_backup() {
 
 update_git() {
   REPOSITORY="$1"
+  GIT_PATH="$2"
   URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
-  cd /home/ulysse314
-  if [ ! -d "/home/ulysse314/${REPOSITORY}" ]; then
+  cd "/home/ulysse314/${GIT_PATH}"
+  if [ ! -d "/home/ulysse314/${GIT_PATH}/${REPOSITORY}" ]; then
     git clone "${URL}"
   else
     cd "${REPOSITORY}"
@@ -25,7 +26,8 @@ update_git() {
 }
 
 update_dir() {
-  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "/home/ulysse314/"
+  DIR_PATH=`dirname $1`
+  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "/home/ulysse314/${DIR_PATH}/"
 }
 
 if [ "$1" != "" ];  then
@@ -38,7 +40,9 @@ apt-get upgrade -y
 
 update_git scripts
 update_git boat
-update_dir arduino
+update_dir arduino/app
+update_dir arduino/arduino15
+update_git Adafruit_GPS arduino/libraries
 
 cp /home/ulysse314/scripts/authorized_keys /root/.ssh/authorized_keys
 cp /home/ulysse314/scripts/authorized_keys /home/ulysse314/.ssh/authorized_keys
