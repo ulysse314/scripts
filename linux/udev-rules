@@ -1,1 +1,2 @@
 ACTION=="add", SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="801b", SYMLINK+="featherm0"
+ACTION=="add", SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="000b", SYMLINK+="featherftdi"
