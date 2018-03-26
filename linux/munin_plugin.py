@@ -112,15 +112,19 @@ else:
   print("cpu.value " + str(j["pi"]["cpu%"]))
   print("")
   print("multigraph ulysse314_gps_4g")
-  print("gps_sat_tracked.value " + str(j["gps"]["tracked"]))
-  print("gps_sat.value " + str(j["gps"]["sat"]))
-  print("cellular_signal.value " + str(j["cellular"]["SignalIcon"]))
-  print("cellular_network_type.value " + str(j["cellular"]["CurrentNetworkType"]))
+  printValue("gps_sat_tracked.value", "gps", "tracked")
+  printValue("gps_sat.value", "gps", "sat")
+  printValue("cellular_signal.value", "cellular", "SignalIcon")
+  printValue("cellular_network_type.value", "cellular", "CurrentNetworkType")
   print("")
   print("multigraph ulysse314_received_signal")
-  print("rsrp.value " + str(-toInteger(j["cellular"]["rsrp"])))
-  print("rsrq.value " + str(-toInteger(j["cellular"]["rsrq"])))
-  print("rssi.value " + str(-toInteger(j["cellular"]["rssi"])))
+  if "cellular" in j:
+    if "rsrp" in j["cellular"]:
+      print("rsrp.value " + str(-toInteger(j["cellular"]["rsrp"])))
+    if "rsrq" in j["cellular"]:
+      print("rsrq.value " + str(-toInteger(j["cellular"]["rsrq"])))
+    if "rssi" in j["cellular"]:
+      print("rssi.value " + str(-toInteger(j["cellular"]["rssi"])))
   print("")
   print("multigraph ulysse314_gps")
   printValue("gps_lat.value", "gps", "lat")
