@@ -9,12 +9,6 @@ cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
 cat /tmp/crontab > /etc/crontab
 cat /home/ulysse314/scripts/crontab >> /etc/crontab
 
-if [ -e /etc/munin/plugins/ulysse314.py ]; then
-  destination=`realpath /etc/munin/plugins/ulysse314.py`
-  if [ "${destination}" != "/home/ulysse314/scripts/linux/munin_plugin.py" ]; then
-    rm /etc/munin/plugins/ulysse314.py
-  fi
-fi
 if [ ! -e /etc/munin/plugins/ulysse314.py ]; then
   ln -s /home/ulysse314/scripts/linux/munin_plugin.py /etc/munin/plugins/ulysse314.py
 fi
