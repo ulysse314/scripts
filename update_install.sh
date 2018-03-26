@@ -17,9 +17,9 @@ if [ ! -f /etc/udev/rules.d/99-feather-symlink.rules ]; then
   ln -s /home/ulysse314/scripts/linux/udev-rules /etc/udev/rules.d/99-feather-symlink.rules
 fi
 
-if [ ! -f /home/ulysse314/arduino ]; then
+if [ ! -d /home/ulysse314/arduino ]; then
   mkdir /home/ulysse314/arduino
 fi
-if [ ! -f /home/ulysse314/arduino/libraries ]; then
+if [ ! -d /home/ulysse314/arduino/libraries ]; then
   mkdir /home/ulysse314/arduino/libraries
 fi
