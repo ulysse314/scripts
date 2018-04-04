@@ -42,7 +42,9 @@ a = s.recv(2000)
 s.close()
 j = json.loads(a.decode("utf-8"))
 
-if len(sys.argv) == 2 and sys.argv[1] == "config":
+if len(sys.argv) == 2 and sys.argv[1] == "print":
+  pprint.pprint(j)
+elif len(sys.argv) == 2 and sys.argv[1] == "config":
   print("multigraph ulysse314_temperature")
   print("graph_title Temperatures")
   print("graph_category ulysse314")
