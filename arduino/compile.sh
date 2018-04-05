@@ -4,11 +4,12 @@
 file_to_compile="$1"
 build_dir="$2"
 
-if [[ "${build_dir}" = "" ]]; then
-  build_dir="/tmp/arduino_build"
-fi
 if [[ "${file_to_compile}" = "" ]]; then
   file_to_compile="/home/ulysse314/boat/arduino/arduino.ino"
+fi
+if [[ "${build_dir}" = "" ]]; then
+  base_name=`basename "${file_to_compile}"`
+  build_dir="/tmp/arduino_build/${base_name}"
 fi
 
 mkdir -p "${build_dir}"
