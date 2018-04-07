@@ -42,7 +42,7 @@ a = s.recv(2000)
 s.close()
 j = json.loads(a.decode("utf-8"))
 
-if len(sys.argv) == 2 and sys.argv[1] == "print":
+if len(sys.argv) == 2 and (sys.argv[1] == "print" or sys.argv[1] == "pprint" or sys.argv[1] == "values"):
   pprint.pprint(j)
 elif len(sys.argv) == 2 and sys.argv[1] == "config":
   print("multigraph ulysse314_temperature")
@@ -84,9 +84,10 @@ elif len(sys.argv) == 2 and sys.argv[1] == "config":
   print("graph_title Received signal")
   print("graph_category ulysse314")
   print("graph_data_size custom 576, 6 107280")
-  print("rsrp.label RSRP")
-  print("rsrq.label RSRQ")
-  print("rssi.label RSSI")
+  print("rsrp.label -RSRP")
+  print("rsrq.label -RSRQ")
+  print("rssi.label -RSSI")
+  print("sinr.label sinr")
   print("")
   print("multigraph ulysse314_gps")
   print("graph_title GPS")
@@ -94,8 +95,6 @@ elif len(sys.argv) == 2 and sys.argv[1] == "config":
   print("graph_data_size custom 576, 6 107280")
   print("gps_lat.label Lat")
   print("gps_lon.label Lon")
-elif len(sys.argv) == 2 and sys.argv[1] == "values":
-  pprint.pprint(j)
 else:
   print("multigraph ulysse314_temperature")
   printValue("dof.value", "dof", "temp")
@@ -127,6 +126,8 @@ else:
       print("rsrq.value " + str(-toInteger(j["cellular"]["rsrq"])))
     if "rssi" in j["cellular"]:
       print("rssi.value " + str(-toInteger(j["cellular"]["rssi"])))
+    if "sinr" in j["cellular"]:
+      print("sinr.value " + str(toInteger(j["cellular"]["sinr"])))
   print("")
   print("multigraph ulysse314_gps")
   printValue("gps_lat.value", "gps", "lat")
