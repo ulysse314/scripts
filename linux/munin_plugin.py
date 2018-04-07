@@ -120,13 +120,13 @@ else:
   print("")
   print("multigraph ulysse314_received_signal")
   if "cellular" in j:
-    if "rsrp" in j["cellular"]:
+    if "rsrp" in j["cellular"] and j["cellular"]["rsrp"]:
       print("rsrp.value " + str(-toInteger(j["cellular"]["rsrp"])))
-    if "rsrq" in j["cellular"]:
+    if "rsrq" in j["cellular"] and j["cellular"]["rsrq"]:
       print("rsrq.value " + str(-toInteger(j["cellular"]["rsrq"])))
-    if "rssi" in j["cellular"]:
+    if "rssi" in j["cellular"] and j["cellular"]["rssi"]:
       print("rssi.value " + str(-toInteger(j["cellular"]["rssi"])))
-    if "sinr" in j["cellular"]:
+    if "sinr" in j["cellular"] and j["cellular"]["sinr"]:
       print("sinr.value " + str(toInteger(j["cellular"]["sinr"])))
   print("")
   print("multigraph ulysse314_gps")
