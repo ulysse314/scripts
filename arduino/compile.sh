@@ -1,5 +1,5 @@
 #!/bin/bash
-# compile.sh [file_to_compile]
+# compile.sh [file_to_compile] [build_dir]
 
 file_to_compile="$1"
 build_dir="$2"
