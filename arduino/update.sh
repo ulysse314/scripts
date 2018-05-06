@@ -12,24 +12,24 @@ build_dir="/tmp/arduino_build/${base_name}"
 binary="${build_dir}/${base_name}.bin"
 
 /home/ulysse314/scripts/arduino/compile.sh "${file_to_compile}" "${build_dir}"
-if [ "$?" != 0 ]; then
+if [[ "$?" != 0 ]]; then
   exit 1
 fi
 while :
 do
   feather_port=`/home/ulysse314/scripts/arduino/serial_ports.sh "${feather_description}"`
-  if [ "$feather_port" != "" ]; then
+  if [[ "$feather_port" != "" ]]; then
     /home/ulysse314/scripts/arduino/reset.py "${feather_port}"
   else
     feather_ftdi_port=`/home/ulysse314/scripts/arduino/serial_ports.sh "${feather_ftdi_description}"`
-    if [ "$feather_ftdi_port" != "" ]; then
+    if [[ "$feather_ftdi_port" != "" ]]; then
       break
     fi
   fi
   sleep 1
 done
 /home/ulysse314/scripts/arduino/upload.sh "${binary}" "${feather_ftdi_port}"
-if [ "$?" != 0 ]; then
+if [[ "$?" != 0 ]]; then
   exit 3
 fi
 echo "=== Updated ==="
