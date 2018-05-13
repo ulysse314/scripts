@@ -44,7 +44,7 @@ update_dir arduino/app
 update_dir arduino/arduino15
 update_git Adafruit_GPS arduino/libraries
 update_git Adafruit-PWM-Servo-Driver-Library arduino/libraries
-update_git MemoryFree arduino/libraries
+update_git Arduino-MemoryFree arduino/libraries
 
 cp /home/ulysse314/scripts/authorized_keys /root/.ssh/authorized_keys
 cp /home/ulysse314/scripts/authorized_keys /home/ulysse314/.ssh/authorized_keys
