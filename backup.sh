@@ -4,7 +4,8 @@ set -x
 
 source /etc/ulysse314/script
 
-BACKUP_FOLDER='/home/ulysse314/system/'
+MAIN_DIR="/home/ulysse314"
+BACKUP_FOLDER='${MAIN_DIR}/system/'
 
 rsync_for_backup() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${BOAT_NAME}/"
@@ -15,8 +16,8 @@ update_git() {
   GIT_PATH="$2"
   URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
-  cd "/home/ulysse314/${GIT_PATH}"
-  if [ ! -d "/home/ulysse314/${GIT_PATH}/${REPOSITORY}" ]; then
+  cd "${MAIN_DIR}/${GIT_PATH}"
+  if [ ! -d "${MAIN_DIR}/${GIT_PATH}/${REPOSITORY}" ]; then
     git clone "${URL}"
   else
     cd "${REPOSITORY}"
@@ -27,7 +28,7 @@ update_git() {
 
 update_dir() {
   DIR_PATH=`dirname $1`
-  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "/home/ulysse314/${DIR_PATH}/"
+  rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "${MAIN_DIR}/${DIR_PATH}/"
 }
 
 if [ "$1" != "" ];  then
@@ -46,14 +47,21 @@ update_git Adafruit_GPS arduino/libraries
 update_git Adafruit-PWM-Servo-Driver-Library arduino/libraries
 update_git Arduino-MemoryFree arduino/libraries
 
-cp /home/ulysse314/scripts/authorized_keys /root/.ssh/authorized_keys
-cp /home/ulysse314/scripts/authorized_keys /home/ulysse314/.ssh/authorized_keys
-chown ulysse314:ulysse314 /home/ulysse314/.ssh/authorized_keys
+cp "${MAIN_DIR}/scripts/authorized_keys" "/root/.ssh/authorized_keys"
+cp "${MAIN_DIR}/scripts/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
+chown ulysse314:ulysse314 "${MAIN_DIR}/.ssh/authorized_keys"
 scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
 rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
 
 rsync -aqv --delete-after /etc "${BACKUP_FOLDER}"
 apt list --installed > "${BACKUP_FOLDER}packages.txt"
 rsync_for_backup "/root"
-rsync_for_backup "/home/ulysse314"
+rsync_for_backup "${MAIN_DIR}"
 rsync_for_backup "/boot"
+
+if [[ `cat "${MAIN_DIR}/boat/arduino/Version.h" | cksum` != `cat "${MAIN_DIR}/.arduino_version" | cksum` ]]; then
+  "${MAIN_DIR}/scripts/arduino/update.sh"
+  if [[ "$?" == "0" ]]; then
+    cp "${MAIN_DIR}/boat/arduino/Version.h" "${MAIN_DIR}/.arduino_version"
+  fi
+fi
