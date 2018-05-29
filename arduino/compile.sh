@@ -26,7 +26,7 @@ mkdir -p "${build_dir}"
     -fqbn=adafruit:samd:adafruit_feather_m0_express \
     -ide-version=10800 \
     -build-path "${build_dir}" \
-    -warnings=none \
+    -warnings=all \
     -prefs=build.warn_data_percentage=75 \
     -prefs=runtime.tools.arm-none-eabi-gcc.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1 \
     -prefs=runtime.tools.openocd.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/openocd/0.9.0-arduino \
