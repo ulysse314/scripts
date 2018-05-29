@@ -4,6 +4,8 @@
 file_to_compile="$1"
 build_dir="$2"
 
+source /etc/ulysse314/script
+
 if [[ "${file_to_compile}" = "" ]]; then
   file_to_compile="/home/ulysse314/boat/arduino/arduino.ino"
 fi
@@ -32,6 +34,7 @@ mkdir -p "${build_dir}"
     -prefs=runtime.tools.openocd.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/openocd/0.9.0-arduino \
     -prefs=runtime.tools.bossac.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/bossac/1.6.1-arduino \
     -prefs=runtime.tools.CMSIS.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/CMSIS/4.0.0-atmel \
+    -prefs="compiler.cpp.extra_flags=-DBOAT_ID=${BOAT_ID}" \
     -verbose "${file_to_compile}"
 result=`echo $?`
 if [[ "${result}" == "0" ]]; then
