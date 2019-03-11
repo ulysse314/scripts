@@ -5,10 +5,18 @@ set -x
 source /etc/ulysse314/script
 
 DEBUG_FILE='/tmp/test'
-SSH_WIFI="-R *:${SSH_WIFI_PORT}:127.0.0.1:22"
-CAM_WIFI="-R *:${CAM_WIFI_PORT}:127.0.0.1:8081"
-SSH_4G="-R *:${SSH_4G_PORT}:127.0.0.1:22"
-CAM_4G="-R *:${CAM_4G_PORT}:127.0.0.1:8081"
+if [[ "${SSH_WIFI_PORT}" != "" ]]; then
+  SSH_WIFI="-R *:${SSH_WIFI_PORT}:127.0.0.1:22"
+fi
+if [[ "${CAM_WIFI_PORT}" != "" ]]; then
+  CAM_WIFI="-R *:${CAM_WIFI_PORT}:127.0.0.1:8081"
+fi
+if [[ "${SSH_4G_PORT}" != "" ]]; then
+  SSH_4G="-R *:${SSH_4G_PORT}:127.0.0.1:22"
+fi
+if [[ "${CAM_4G_PORT}" != "" ]]; then
+  CAM_4G="-R *:${CAM_4G_PORT}:127.0.0.1:8081"
+fi
 
 /home/ulysse314/scripts/update_install.sh
 AUTOSSH_LOGLEVEL=7 AUTOSSH_LOGFILE='/tmp/wifi_autossh.log' /usr/bin/autossh -M 0 -v -f -N -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes ${SSH_WIFI} ${CAM_WIFI} -p "${TUNNEL_PORT}" "${TUNNEL_USER}@${TUNNEL_SERVER}"
