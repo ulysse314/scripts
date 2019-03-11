@@ -67,3 +67,16 @@ cp "${MAIN_DIR}/scripts/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
 chown ulysse314:ulysse314 "${MAIN_DIR}/.ssh/authorized_keys"
 scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
 rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
+
+# Camera
+grep uv4l /etc/apt/sources.list | grep stretch
+if [ "$?" != "0" ]; then
+  curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
+  cat /etc/apt/sources.list | grep -v uv4l > /tmp/sources.list
+  cat /tmp/sources.list > /etc/apt/sources.list
+  echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" >> /etc/apt/sources.list
+  apt-get update
+  apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
+  service uv4l_raspicam restart
+sed -i "s/start_x=0/start_x=1/g" /boot/config.txt
+fi
