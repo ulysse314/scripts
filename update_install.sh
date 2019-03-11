@@ -77,7 +77,7 @@ if [ "$?" != "0" ]; then
   cat /tmp/sources.list > /etc/apt/sources.list
   echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" >> /etc/apt/sources.list
   apt-get update
-  apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
-  service uv4l_raspicam restart
-sed -i "s/start_x=0/start_x=1/g" /boot/config.txt
+  sed -i "s/start_x=0/start_x=1/g" /boot/config.txt
 fi
+apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
+service uv4l_raspicam restart
