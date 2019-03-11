@@ -3,20 +3,7 @@
 
 set -x
 
-function update_git {
-  REPOSITORY="$1"
-  URL="https://github.com/ulysse314/${REPOSITORY}.git"
-  pushd .
-  cd /home/ulysse314
-  if [ ! -d "/home/ulysse314/${REPOSITORY}" ]; then
-    git clone "${URL}"
-  else
-    cd "${REPOSITORY}"
-    git pull --rebase
-  fi
-  popd
-}
-
+DEFAULT_USER=ulysse314
 BOAT_NAME="$1"
 BACKUP_USER="$2"
 BACKUP_SERVER="$3"
@@ -42,11 +29,9 @@ fi
 cat /root/.ssh/id_rsa.pub
 curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
 
-apt-get install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
-pip3 install pyserial-asyncio
-pip3 install adafruit-pca9685
+apt-get install -y git
 
-if [ ! -f /root/.ssh/known_hosts ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ] && [ "${PUBLIC_KEY_SERVER}" != "" ]; then
+if [ ! -f /root/.ssh/known_hosts ] && [ "${BACKUP_SERVER}" != "" ] && [ "${BACKUP_PORT}" != "" ]; then
   ssh-keyscan -p "${BACKUP_PORT}" "${BACKUP_SERVER}" | grep -v "\#" > /root/.ssh/known_hosts
 fi
 if [ ! -d /etc/ulysse314 ]; then
@@ -58,6 +43,8 @@ if [ ! -f /etc/ulysse314/script ]; then
     echo "BACKUP_USER='${BACKUP_USER}'" >> /etc/ulysse314/script
     echo "BACKUP_SERVER='${BACKUP_SERVER}'" >> /etc/ulysse314/script
     echo "BACKUP_PORT='${BACKUP_PORT}'" >> /etc/ulysse314/script
+    echo "DEFAULT_USER='${DEFAULT_USER}'" >> /etc/ulysse314/script
+    echo "MAIN_DIR='/home/${DEFAULT_USER}'" >> /etc/ulysse314/script
   else
     echo "Needs /etc/ulysse314/script"
     exit 1
@@ -70,22 +57,23 @@ if [ ! -f /etc/ulysse314/name ]; then
 fi
 
 userdel -r pi
-if [ ! -d /home/ulysse314 ]; then
-  useradd -m -G sudo ulysse314
+if [ ! -d "/home/${DEFAULT_USER}" ]; then
+  useradd -m -G sudo "${DEFAULT_USER}"
 fi
-if [ ! -d /home/ulysse314/.ssh ]; then
-  mkdir /home/ulysse314/.ssh
-  chown ulysse314:ulysse314 /home/ulysse314/.ssh
-  chmod 0700 /home/ulysse314/.ssh
+if [ ! -d "/home/${DEFAULT_USER}/.ssh" ]; then
+  mkdir "/home/${DEFAULT_USER}/.ssh"
+  chown "${DEFAULT_USER}:${DEFAULT_USER}" "/home/${DEFAULT_USER}/.ssh"
+  chmod 0700 "/home/${DEFAULT_USER}/.ssh"
 fi
 
 git config --global user.name "${BOAT_NAME}"
 git config --global user.email "${BOAT_NAME}"
-update_git scripts
-
-if [ ! -f /var/www/html/munin ]; then
-  ln -s /var/cache/munin/www /var/www/html/munin
+cd "${MAIN_DIR}"
+if [ ! -d "${MAIN_DIR}/scripts" ]; then
+  git clone "https://github.com/ulysse314/scripts.git"
+else
+  cd "scripts"
+  git pull --rebase
 fi
 
-/home/ulysse314/scripts/backup.sh
-/home/ulysse314/scripts/update_install.sh
+"/home/${DEFAULT_USER}/scripts/update_install.sh"
