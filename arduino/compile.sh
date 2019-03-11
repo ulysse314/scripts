@@ -9,12 +9,19 @@ source /etc/ulysse314/script
 if [[ "${file_to_compile}" = "" ]]; then
   file_to_compile="/home/ulysse314/boat/arduino/arduino.ino"
 fi
+source_dir=`dirname "${file_to_compile}"`
+base_name=`basename "${file_to_compile}"`
 if [[ "${build_dir}" = "" ]]; then
-  base_name=`basename "${file_to_compile}"`
   build_dir="/tmp/arduino_build/${base_name}"
 fi
-
 mkdir -p "${build_dir}"
+tmp_source_dir="/tmp/arduino_source/${base_name}"
+mkdir -p "${tmp_source_dir}"
+find "${source_dir}" -name *.h -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name *.cpp -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name *.c -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name *.ino -exec cp '{}' "${tmp_source_dir}" \;
+
 /home/ulysse314/arduino/app/arduino-builder \
     -compile \
     -logger=machine \
@@ -35,7 +42,8 @@ mkdir -p "${build_dir}"
     -prefs=runtime.tools.bossac.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/bossac/1.6.1-arduino \
     -prefs=runtime.tools.CMSIS.path=/home/ulysse314/arduino/arduino15/packages/arduino/tools/CMSIS/4.0.0-atmel \
     -prefs="compiler.cpp.extra_flags=-DBOAT_ID=${BOAT_ID}" \
-    -verbose "${file_to_compile}"
+    -verbose \
+    "${tmp_source_dir}/${base_name}"
 result=`echo $?`
 if [[ "${result}" == "0" ]]; then
   echo "=== Compiled ==="
