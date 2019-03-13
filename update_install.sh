@@ -90,6 +90,5 @@ if [[ "$?" != "0" ]]; then
   echo "gpu_mem=128" >> /boot/config.txt
 fi
 apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
-service uv4l_raspicam restart
 
 date > /tmp/last_update_install.txt
