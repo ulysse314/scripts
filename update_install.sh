@@ -27,6 +27,7 @@ update_dir() {
 
 apt update
 apt upgrade -y
+apt autoremove -y
 
 apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
 pip3 install pyserial-asyncio
