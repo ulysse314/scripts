@@ -25,10 +25,10 @@ update_dir() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "${MAIN_DIR}/${DIR_PATH}/"
 }
 
-apt-get update
-apt-get upgrade -y
+apt update
+apt upgrade -y
 
-apt-get install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
+apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 
@@ -76,7 +76,7 @@ if [ "$?" != "0" ]; then
   cat /etc/apt/sources.list | grep -v uv4l > /tmp/sources.list
   cat /tmp/sources.list > /etc/apt/sources.list
   echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" >> /etc/apt/sources.list
-  apt-get update
+  apt update
   sed -i "s/start_x=0/start_x=1/g" /boot/config.txt
 fi
 apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
