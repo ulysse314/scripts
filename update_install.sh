@@ -72,13 +72,22 @@ rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_
 
 # Camera
 grep uv4l /etc/apt/sources.list | grep stretch
-if [ "$?" != "0" ]; then
+if [[ "$?" != "0" ]]; then
   curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
   cat /etc/apt/sources.list | grep -v uv4l > /tmp/sources.list
   cat /tmp/sources.list > /etc/apt/sources.list
   echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" >> /etc/apt/sources.list
   apt update
+fi
+grep start_x /boot/config.txt
+if [[ "$?" != "0" ]]; then
+  echo "start_x=1" >> /boot/config.txt
+else
   sed -i "s/start_x=0/start_x=1/g" /boot/config.txt
+fi
+grep gpu_mem /boot/config.txt
+if [[ "$?" != "0" ]]; then
+  echo "gpu_mem=128" >> /boot/config.txt
 fi
 apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
 service uv4l_raspicam restart
