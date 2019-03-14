@@ -4,7 +4,7 @@ set -x
 
 source /etc/ulysse314/script
 
-DEBUG_FILE='/tmp/test'
+DEBUG_FILE='/tmp/boot.log'
 if [[ "${SSH_WIFI_PORT}" != "" ]]; then
   SSH_WIFI="-R *:${SSH_WIFI_PORT}:127.0.0.1:22"
 fi
