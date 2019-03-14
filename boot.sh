@@ -27,3 +27,9 @@ lsusb >> "${DEBUG_FILE}"
 date >> "${DEBUG_FILE}"
 echo done >> "${DEBUG_FILE}"
 /home/ulysse314/boat/start.sh boat "${BOAT_NAME}"
+
+if [[ "${CAMERA_ID}" == "PI" ]]; then
+  uv4l --driver raspicam --server-option --port=8081 --auto-video_nr --width 640 --height 480 --encoding jpeg -–framerate 30
+elif [[ "${CAMERA_ID}" != "" ]]; then
+  uv4l --driver uvc --syslog-host localhost --device-id "${CAMERA_ID}" --server-option --port=8081 --auto-video_nr
+fi
