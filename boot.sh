@@ -29,7 +29,7 @@ echo done >> "${DEBUG_FILE}"
 /home/ulysse314/boat/start.sh boat "${BOAT_NAME}"
 
 if [[ "${CAMERA_ID}" == "PI" ]]; then
-  uv4l --driver raspicam --server-option --port=8081 --auto-video_nr --width 640 --height 480 --encoding jpeg -–framerate 30
+  uv4l --driver raspicam --server-option --port=8081 --auto-video_nr --width 640 --height 480 --encoding jpeg -–framerate 30 1&>> "${DEBUG_FILE}"
 elif [[ "${CAMERA_ID}" != "" ]]; then
-  uv4l --driver uvc --syslog-host localhost --device-id "${CAMERA_ID}" --server-option --port=8081 --auto-video_nr
+  uv4l --driver uvc --syslog-host localhost --device-id "${CAMERA_ID}" --server-option --port=8081 --auto-video_nr 1&>> "${DEBUG_FILE}"
 fi
