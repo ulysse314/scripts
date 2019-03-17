@@ -32,6 +32,7 @@ apt autoremove -y
 apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip munin nginx
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
+pip3 install netifaces
 
 if [ -f "${MAIN_DIR}/scripts/crontab" ]; then
   cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
