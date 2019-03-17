@@ -11,11 +11,11 @@ fi
 if [[ "${CAM_4G_PORT}" != "" ]]; then
   CAM_TUNNEL="-R *:${CAM_4G_PORT}:127.0.0.1:8090"
 fi
-if [[ "${SSH_PORT}" != "" ]]; then
-  SSH_TUNNEL="-R *:${SSH_PORT}:127.0.0.1:22"
+if [[ "${SSH_TUNNEL_PORT}" != "" ]]; then
+  SSH_TUNNEL="-R *:${SSH_TUNNEL_PORT}:127.0.0.1:22"
 fi
-if [[ "${CAM_PORT}" != "" ]]; then
-  CAM_TUNNEL="-R *:${CAM_PORT}:127.0.0.1:8090"
+if [[ "${CAM_TUNNEL_PORT}" != "" ]]; then
+  CAM_TUNNEL="-R *:${CAM_TUNNEL_PORT}:127.0.0.1:8090"
 fi
 
 /home/ulysse314/scripts/update_install.sh
