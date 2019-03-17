@@ -9,13 +9,13 @@ if [[ "${SSH_WIFI_PORT}" != "" ]]; then
   SSH_WIFI="-R *:${SSH_WIFI_PORT}:127.0.0.1:22"
 fi
 if [[ "${CAM_WIFI_PORT}" != "" ]]; then
-  CAM_WIFI="-R *:${CAM_WIFI_PORT}:127.0.0.1:8081"
+  CAM_WIFI="-R *:${CAM_WIFI_PORT}:127.0.0.1:8090"
 fi
 if [[ "${SSH_4G_PORT}" != "" ]]; then
   SSH_4G="-R *:${SSH_4G_PORT}:127.0.0.1:22"
 fi
 if [[ "${CAM_4G_PORT}" != "" ]]; then
-  CAM_4G="-R *:${CAM_4G_PORT}:127.0.0.1:8081"
+  CAM_4G="-R *:${CAM_4G_PORT}:127.0.0.1:8090"
 fi
 
 /home/ulysse314/scripts/update_install.sh
