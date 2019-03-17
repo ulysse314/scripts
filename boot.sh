@@ -27,9 +27,13 @@ lsusb >> "${DEBUG_FILE}"
 date >> "${DEBUG_FILE}"
 
 if [[ "${CAMERA_ID}" == "PI" ]]; then
+  echo "camera: PI" >> "${DEBUG_FILE}"
   uv4l --driver raspicam --server-option --port=8081 --auto-video_nr --width 640 --height 480 --encoding jpeg -–framerate 30 1&>> "${DEBUG_FILE}"
 elif [[ "${CAMERA_ID}" != "" ]]; then
+  echo "camera: USB, ${CAMERA_ID}" >> "${DEBUG_FILE}"
   uv4l --driver uvc --syslog-host localhost --device-id "${CAMERA_ID}" --server-option --port=8081 --auto-video_nr 1&>> "${DEBUG_FILE}"
+else
+  echo "camera: None"  >> "${DEBUG_FILE}"
 fi
 
 echo done >> "${DEBUG_FILE}"
