@@ -64,6 +64,7 @@ update_git Adafruit_GPS arduino/libraries
 update_git Adafruit-PWM-Servo-Driver-Library arduino/libraries
 update_git Arduino-MemoryFree arduino/libraries
 update_git ArduinoINA219 arduino/libraries
+update_git Adafruit_ADS1X15 arduino/libraries
 
 cp "${MAIN_DIR}/scripts/authorized_keys" "/root/.ssh/authorized_keys"
 cp "${MAIN_DIR}/scripts/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
