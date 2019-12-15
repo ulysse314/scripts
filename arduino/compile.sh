@@ -17,10 +17,10 @@ fi
 mkdir -p "${build_dir}"
 tmp_source_dir="/tmp/arduino_source/${base_name}"
 mkdir -p "${tmp_source_dir}"
-find "${source_dir}" -name *.h -exec cp '{}' "${tmp_source_dir}" \;
-find "${source_dir}" -name *.cpp -exec cp '{}' "${tmp_source_dir}" \;
-find "${source_dir}" -name *.c -exec cp '{}' "${tmp_source_dir}" \;
-find "${source_dir}" -name *.ino -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name "*.h" -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name "*.cpp" -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name "*.c" -exec cp '{}' "${tmp_source_dir}" \;
+find "${source_dir}" -name "*.ino" -exec cp '{}' "${tmp_source_dir}" \;
 
 /home/ulysse314/arduino/app/arduino-builder \
     -compile \
