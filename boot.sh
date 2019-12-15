@@ -18,7 +18,7 @@ if [[ "${CAM_TUNNEL_PORT}" != "" ]]; then
   CAM_TUNNEL="-R *:${CAM_TUNNEL_PORT}:127.0.0.1:8090"
 fi
 
-/home/ulysse314/scripts/update_install.sh
+/home/ulysse314/scripts/update_install.sh > /tmp/update_install.txt 2>&1
 AUTOSSH_LOGLEVEL=7 AUTOSSH_LOGFILE='/tmp/autossh.log' /usr/bin/autossh -M 0 -v -f -N -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes ${SSH_TUNNEL} ${CAM_TUNNEL} -p "${TUNNEL_PORT}" "${TUNNEL_USER}@${TUNNEL_SERVER}"
 echo "ok" > "${DEBUG_FILE}"
 lsusb >> "${DEBUG_FILE}"

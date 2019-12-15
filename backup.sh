@@ -6,7 +6,7 @@ source /etc/ulysse314/script
 
 BACKUP_FOLDER='${MAIN_DIR}/system/'
 SCRIPT_DIR=`dirname "$0"`
-"${SCRIPT_DIR}/update_install.sh"
+"${SCRIPT_DIR}/update_install.sh" > /tmp/update_install.txt 2>&1
 
 rsync_for_backup() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${1}" "${BACKUP_USER}@${BACKUP_SERVER}:backup/${BOAT_NAME}/"
