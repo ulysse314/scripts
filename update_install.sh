@@ -36,8 +36,8 @@ pip3 install netifaces
 
 if [ -f "${MAIN_DIR}/scripts/crontab" ]; then
   cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
-  cat /tmp/crontab > /etc/crontab
-  cat "${MAIN_DIR}/scripts/crontab" >> /etc/crontab
+  cat "${MAIN_DIR}/scripts/crontab" >> /tmp/crontab
+  mv /tmp/crontab /etc/crontab
 fi
 
 if [ ! -f /var/www/html/munin ]; then
