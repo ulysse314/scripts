@@ -20,7 +20,7 @@ mkdir -p "${tmp_source_dir}"
 find "${source_dir}" -name "*.h" -exec cp '{}' "${tmp_source_dir}" \;
 find "${source_dir}" -name "*.cpp" -exec cp '{}' "${tmp_source_dir}" \;
 find "${source_dir}" -name "*.c" -exec cp '{}' "${tmp_source_dir}" \;
-find "${source_dir}" -name "*.ino" -exec cp '{}' "${tmp_source_dir}" \;
+cp "${file_to_compile}" "${tmp_source_dir}"
 
 /home/ulysse314/arduino/app/arduino-builder \
     -compile \
