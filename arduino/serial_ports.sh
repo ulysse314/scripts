@@ -3,7 +3,6 @@
 description="$1"
 
 for sysdevpath in $(find /sys/bus/usb/devices/usb*/ -name dev); do
-(
   syspath="${sysdevpath%/dev}"
   devname="$(udevadm info -q name -p $syspath)"
   [[ "$devname" == "bus/"* ]] && continue
@@ -12,6 +11,5 @@ for sysdevpath in $(find /sys/bus/usb/devices/usb*/ -name dev); do
   [[ "${ID_SERIAL}" != "${description}" ]] && continue
   echo "${devname}"
   exit 0
-)
 done
 exit 1
