@@ -50,6 +50,8 @@ if [ ! -f /etc/ulysse314/script ]; then
     echo "Needs /etc/ulysse314/script"
     exit 1
   fi
+else
+  source /etc/ulysse314/script
 fi
 if [ ! -f /etc/ulysse314/name ]; then
   echo "${BOAT_NAME}" > /etc/ulysse314/name
