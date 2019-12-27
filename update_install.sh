@@ -23,6 +23,7 @@ update_git() {
 update_dir() {
   DIR_PATH=`dirname $1`
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "${MAIN_DIR}/${DIR_PATH}/"
+  chown -R ulysse314:ulysse314 "${MAIN_DIR}/${DIR_PATH}/"
 }
 
 apt update
