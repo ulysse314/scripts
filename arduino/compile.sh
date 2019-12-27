@@ -46,6 +46,7 @@ cp "${file_to_compile}" "${tmp_source_dir}"
     "${tmp_source_dir}/${base_name}"
 result=`echo $?`
 if [[ "${result}" == "0" ]]; then
+  echo "Result: ${build_dir}/${base_name}.bin"
   echo "=== Compiled ==="
 else
   echo "=== Failed ==="
