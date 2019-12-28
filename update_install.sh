@@ -62,7 +62,7 @@ update_dir arduino/arduino15
 update_git scripts
 update_git boat
 update_git Adafruit_GPS arduino/libraries
-update_git Adafruit-PWM-Servo-Driver-Library arduino/libraries
+update_git ArduinoPCA9685 arduino/libraries
 update_git Arduino-MemoryFree arduino/libraries
 update_git ArduinoINA219 arduino/libraries
 update_git ArduinoADS1X15 arduino/libraries
