@@ -57,16 +57,19 @@ if [ ! -d "${MAIN_DIR}/arduino/libraries" ]; then
   mkdir "${MAIN_DIR}/arduino/libraries"
 fi
 
+# arduino dirs
 update_dir arduino/app
 update_dir arduino/arduino15
-update_git scripts
+# ulysse git
 update_git boat
-update_git Adafruit_GPS arduino/libraries
-update_git ArduinoPCA9685 arduino/libraries
-update_git Arduino-MemoryFree arduino/libraries
-update_git ArduinoINA219 arduino/libraries
-update_git ArduinoADS1X15 arduino/libraries
+update_git scripts
+# arduino git
 update_git Adafruit_BME680 arduino/libraries
+update_git Adafruit_GPS arduino/libraries
+update_git Arduino-MemoryFree arduino/libraries
+update_git ArduinoADS1X15 arduino/libraries
+update_git ArduinoINA219 arduino/libraries
+update_git ArduinoPCA9685 arduino/libraries
 update_git OneWire arduino/libraries
 
 cp "${MAIN_DIR}/scripts/authorized_keys" "/root/.ssh/authorized_keys"
