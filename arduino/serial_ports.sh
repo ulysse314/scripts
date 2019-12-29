@@ -2,11 +2,16 @@
 
 key="$1"
 description="$2"
+debug="$3"
 
 for sysdevpath in $(find /sys/bus/usb/devices/usb*/ -name dev); do
   syspath="${sysdevpath%/dev}"
   devname="$(udevadm info -q name -p ${syspath})"
   [[ "${devname}" == "bus/"* ]] && continue
+  if [[ "${debug}" != "" ]]; then
+    echo "${syspath})"
+    echo "udevadm info -q property --export -p ${syspath}"
+  fi
   eval "$(udevadm info -q property --export -p ${syspath})"
   if [[ "${key}" == "ID_MODEL" ]]; then
     [[ -z "${ID_MODEL}" ]] && continue
