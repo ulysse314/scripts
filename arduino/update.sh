@@ -6,6 +6,7 @@ if [[ "${file_to_compile}" = "" ]]; then
   file_to_compile="/home/ulysse314/boat/arduino/arduino.ino"
 fi
 feather_id_model="Feather_M0_Express"
+feather_id_model_bis="Feather_M0"
 feather_ftdi_description="239a_000b"
 base_name=`basename "${file_to_compile}"`
 build_dir="/tmp/arduino_build/${base_name}"
@@ -17,7 +18,12 @@ if [[ "$?" != 0 ]]; then
 fi
 while :
 do
+  echo "Searching for ID_MODEL: ${feather_id_model}"
   feather_port=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_MODEL "${feather_id_model}"`
+  if [[ "${feather_port}" == "" ]]; then
+    echo "Searching for ID_MODEL: ${feather_id_model_bis}"
+    feather_port=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_MODEL "${feather_id_model_bis}"`
+  fi
   if [[ "${feather_port}" != "" ]]; then
     echo "Feather is present, it needs to be reset into FTDI, ${feather_port}."
     /home/ulysse314/scripts/arduino/reset.py "${feather_port}"
