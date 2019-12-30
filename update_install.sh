@@ -65,7 +65,7 @@ update_git boat
 update_git scripts
 # arduino git
 update_git Adafruit_BME680 arduino/libraries
-update_git Adafruit_GPS arduino/libraries
+update_git ArduinoMTK3339 arduino/libraries
 update_git Arduino-MemoryFree arduino/libraries
 update_git ArduinoADS1X15 arduino/libraries
 update_git ArduinoINA219 arduino/libraries
