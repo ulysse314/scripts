@@ -64,11 +64,11 @@ update_dir arduino/arduino15
 update_git boat
 update_git scripts
 # arduino git
-update_git Adafruit_BME680 arduino/libraries
-update_git ArduinoMTK3339 arduino/libraries
 update_git Arduino-MemoryFree arduino/libraries
 update_git ArduinoADS1X15 arduino/libraries
+update_git ArduinoBME680 arduino/libraries
 update_git ArduinoINA219 arduino/libraries
+update_git ArduinoMTK3339 arduino/libraries
 update_git ArduinoPCA9685 arduino/libraries
 update_git OneWire arduino/libraries
 
