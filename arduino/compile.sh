@@ -32,7 +32,7 @@ cp "${file_to_compile}" "${tmp_source_dir}"
     -tools /home/ulysse314/arduino/app/hardware/tools/avr \
     -tools /home/ulysse314/arduino/arduino15/packages \
     -built-in-libraries /home/ulysse314/arduino/app/libraries \
-    -fqbn=adafruit:samd:adafruit_feather_m0_express \
+    -fqbn=adafruit:samd:adafruit_feather_m0 \
     -ide-version=10800 \
     -build-path "${build_dir}" \
     -warnings=all \
