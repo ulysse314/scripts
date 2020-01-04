@@ -5,6 +5,8 @@ set -x
 source /etc/ulysse314/script
 
 DEBUG_FILE='/tmp/boot.log'
+echo "start" > "${DEBUG_FILE}"
+date >> "${DEBUG_FILE}"
 if [[ "${SSH_4G_PORT}" != "" ]]; then
   SSH_TUNNEL="-R *:${SSH_4G_PORT}:127.0.0.1:22"
 fi
@@ -18,9 +20,12 @@ if [[ "${CAM_TUNNEL_PORT}" != "" ]]; then
   CAM_TUNNEL="-R *:${CAM_TUNNEL_PORT}:127.0.0.1:8090"
 fi
 
-/home/ulysse314/scripts/update_install.sh > /tmp/update_install.txt 2>&1
+#echo "update install" >> "${DEBUG_FILE}"
+#date >> "${DEBUG_FILE}"
+#/home/ulysse314/scripts/update_install.sh > /tmp/update_install.txt 2>&1
+date >> "${DEBUG_FILE}"
 AUTOSSH_LOGLEVEL=7 AUTOSSH_LOGFILE='/tmp/autossh.log' /usr/bin/autossh -M 0 -v -f -N -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes ${SSH_TUNNEL} ${CAM_TUNNEL} -p "${TUNNEL_PORT}" "${TUNNEL_USER}@${TUNNEL_SERVER}"
-echo "ok" > "${DEBUG_FILE}"
+echo "ok" >> "${DEBUG_FILE}"
 lsusb >> "${DEBUG_FILE}"
 /home/ulysse314/scripts/add_route.sh &
 date >> "${DEBUG_FILE}"
@@ -36,4 +41,5 @@ else
 fi
 
 echo done >> "${DEBUG_FILE}"
+date >> "${DEBUG_FILE}"
 /home/ulysse314/boat/start.sh boat "${BOAT_NAME}"
