@@ -43,7 +43,7 @@ ecoh "linux update"
 date
 if [ -f "${MAIN_DIR}/scripts/crontab" ]; then
   cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
-  cat "${MAIN_DIR}/scripts/crontab" >> /tmp/crontab
+  cat "${MAIN_DIR}/scripts/linux/crontab" >> /tmp/crontab
   mv /tmp/crontab /etc/crontab
 fi
 
