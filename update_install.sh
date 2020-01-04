@@ -26,15 +26,21 @@ update_dir() {
   chown -R ulysse314:ulysse314 "${MAIN_DIR}/${DIR_PATH}/"
 }
 
+echo "apt update"
+date
 apt update
 apt upgrade -y
 apt autoremove -y
-
 apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip nginx libfl2 rsync
+
+echo "pip update"
+date
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 pip3 install netifaces
 
+ecoh "linux update"
+date
 if [ -f "${MAIN_DIR}/scripts/crontab" ]; then
   cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
   cat "${MAIN_DIR}/scripts/crontab" >> /tmp/crontab
@@ -57,6 +63,8 @@ if [ ! -d "${MAIN_DIR}/arduino/libraries" ]; then
   mkdir "${MAIN_DIR}/arduino/libraries"
 fi
 
+echo "source update"
+date
 # arduino dirs
 update_dir arduino/app
 update_dir arduino/arduino15
@@ -72,6 +80,8 @@ update_git ArduinoMTK3339 arduino/libraries
 update_git ArduinoPCA9685 arduino/libraries
 update_git OneWire arduino/libraries
 
+echo "some update"
+date
 cp "${MAIN_DIR}/scripts/authorized_keys" "/root/.ssh/authorized_keys"
 cp "${MAIN_DIR}/scripts/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
 chown ulysse314:ulysse314 "${MAIN_DIR}/.ssh/authorized_keys"
@@ -81,6 +91,8 @@ rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_
 # Camera
 CAMERA_ENABLED="0"
 if [[ "${CAMERA_ENABLED}" == "1" ]]; then
+  echo "camera update"
+  date
   grep uv4l /etc/apt/sources.list | grep stretch
   if [[ "$?" != "0" ]]; then
     curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
@@ -102,4 +114,6 @@ if [[ "${CAMERA_ENABLED}" == "1" ]]; then
   apt install -y uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-tc358743-extras
 fi
 
+echo "done"
+date
 date > /tmp/last_update_install.txt
