@@ -41,7 +41,7 @@ pip3 install netifaces
 
 ecoh "linux update"
 date
-if [ -f "${MAIN_DIR}/scripts/crontab" ]; then
+if [ -f "${MAIN_DIR}/scripts/linux/crontab" ]; then
   cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
   cat "${MAIN_DIR}/scripts/linux/crontab" >> /tmp/crontab
   mv /tmp/crontab /etc/crontab
@@ -78,6 +78,7 @@ update_git ArduinoBME680 arduino/libraries
 update_git ArduinoINA219 arduino/libraries
 update_git ArduinoMTK3339 arduino/libraries
 update_git ArduinoPCA9685 arduino/libraries
+update_git ArduinoBNO055 arduino/libraries
 update_git OneWire arduino/libraries
 
 echo "some update"
