@@ -80,6 +80,7 @@ update_git ArduinoMTK3339 arduino/libraries
 update_git ArduinoPCA9685 arduino/libraries
 update_git ArduinoBNO055 arduino/libraries
 update_git OneWire arduino/libraries
+update_git SleepyDog arduino/libraries
 
 echo "some update"
 date
