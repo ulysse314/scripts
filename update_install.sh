@@ -46,6 +46,11 @@ if [ -f "${MAIN_DIR}/scripts/linux/crontab" ]; then
   cat "${MAIN_DIR}/scripts/linux/crontab" >> /tmp/crontab
   mv /tmp/crontab /etc/crontab
 fi
+if [ -f "${MAIN_DIR}/scripts/linux/dhcpcd.conf" ]; then
+  cat /etc/dhcpcd.conf | grep -v ULYSSE314 > /tmp/dhcpcd.conf
+  cat "${MAIN_DIR}/scripts/linux/dhcpcd.conf" >> /tmp/dhcpcd.conf
+  mv /tmp/dhcpcd.conf /etc/dhcpcd.conf
+fi
 
 if [ ! -f /var/www/html/munin ]; then
   ln -s /var/cache/munin/www /var/www/html/munin
