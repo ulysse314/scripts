@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Use 4G network in priority against wifi.
+
 set -x
 
 DEBUG_FILE=/tmp/route
