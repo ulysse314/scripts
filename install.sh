@@ -27,7 +27,7 @@ if [ ! -f /root/.ssh/id_rsa ]; then
   curl -L --data "`cat /root/.ssh/id_rsa.pub`" "http://www.${PUBLIC_KEY_SERVER}/public_key" > /dev/null
 fi
 cat /root/.ssh/id_rsa.pub
-curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/authorized_keys" -o /root/.ssh/authorized_keys
+curl -L "https://raw.githubusercontent.com/ulysse314/scripts/master/linux/authorized_keys" -o /root/.ssh/authorized_keys
 
 apt update
 apt install -y git
