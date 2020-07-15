@@ -31,7 +31,7 @@ date
 apt update
 apt upgrade -y
 apt autoremove -y
-apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip nginx libfl2 rsync
+apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip nginx libfl2 rsync ifmetric
 
 echo "pip update"
 date
