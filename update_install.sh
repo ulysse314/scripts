@@ -80,10 +80,11 @@ update_git scripts
 update_git Arduino-MemoryFree arduino/libraries
 update_git ArduinoADS1X15 arduino/libraries
 update_git ArduinoBME680 arduino/libraries
+update_git ArduinoBNO055 arduino/libraries
+update_git ArduinoBusDevice arduino/libraries
 update_git ArduinoINA219 arduino/libraries
 update_git ArduinoMTK3339 arduino/libraries
 update_git ArduinoPCA9685 arduino/libraries
-update_git ArduinoBNO055 arduino/libraries
 update_git OneWire arduino/libraries
 update_git SleepyDog arduino/libraries
 
