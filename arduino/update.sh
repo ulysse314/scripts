@@ -1,36 +1,34 @@
 #!/bin/bash
-# update.sh [file_to_compile]
+# update.sh [ino_file_path]
 
-file_to_compile=$1
-if [[ "${file_to_compile}" = "" ]]; then
-  file_to_compile="/home/ulysse314/boat/arduino/arduino.ino"
+INO_FULL_PATH=$1
+
+if [[ "${INO_FULL_PATH}" = "" ]]; then
+  INO_FULL_PATH="/home/ulysse314/boat/arduino/arduino.ino"
 fi
-feather_id_model="Feather_M0_Express"
-feather_id_model_bis="Feather_M0"
-feather_ftdi_description="239a_000b"
-base_name=`basename "${file_to_compile}"`
-build_dir="/tmp/arduino_build/${base_name}"
-binary="${build_dir}/${base_name}.bin"
+FEATHER_ID_MODEL="Feather_M0_Express"
+FEATHER_ID_MODEL_BIS="Feather_M0"
+FEATHER_FTDI_DESCRIPTION="239a_000b"
 
-/home/ulysse314/scripts/arduino/compile.sh "${file_to_compile}" "${build_dir}"
+/home/ulysse314/scripts/arduino/compile.sh "${INO_FULL_PATH}"
 if [[ "$?" != 0 ]]; then
   exit 1
 fi
 while :
 do
-  echo "Searching for ID_MODEL: ${feather_id_model}"
-  feather_port=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_MODEL "${feather_id_model}"`
-  if [[ "${feather_port}" == "" ]]; then
-    echo "Searching for ID_MODEL: ${feather_id_model_bis}"
-    feather_port=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_MODEL "${feather_id_model_bis}"`
+  echo "Searching for ID_MODEL: ${FEATHER_ID_MODEL}"
+  FEATHER_PORT=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_MODEL "${FEATHER_ID_MODEL}"`
+  if [[ "${FEATHER_PORT}" == "" ]]; then
+    echo "Searching for ID_MODEL: ${FEATHER_ID_MODEL_BIS}"
+    FEATHER_PORT=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_MODEL "${FEATHER_ID_MODEL_BIS}"`
   fi
-  if [[ "${feather_port}" != "" ]]; then
-    echo "Feather is present, it needs to be reset into FTDI, ${feather_port}."
-    /home/ulysse314/scripts/arduino/reset.py "${feather_port}"
+  if [[ "${FEATHER_PORT}" != "" ]]; then
+    echo "Feather is present, it needs to be reset into FTDI, ${FEATHER_PORT}."
+    /home/ulysse314/scripts/arduino/reset.py "${FEATHER_PORT}"
   else
-    feather_ftdi_port=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_SERIAL "${feather_ftdi_description}"`
-    echo "FTDI port: ${feather_ftdi_port}"
-    if [[ "${feather_ftdi_port}" != "" ]]; then
+    FEATHER_FTDI_PORT=`/home/ulysse314/scripts/arduino/serial_ports.sh ID_SERIAL "${FEATHER_FTDI_DESCRIPTION}"`
+    echo "FTDI port: ${FEATHER_FTDI_PORT}"
+    if [[ "${FEATHER_FTDI_PORT}" != "" ]]; then
       echo "FTDI port found"
       break
     fi
@@ -38,7 +36,7 @@ do
   echo "Failed, trying again in one second"
   sleep 1
 done
-/home/ulysse314/scripts/arduino/upload.sh "${binary}" "${feather_ftdi_port}"
+/home/ulysse314/scripts/arduino/upload.sh "${INO_FULL_PATH}" "${FEATHER_FTDI_PORT}"
 if [[ "$?" != 0 ]]; then
   exit 3
 fi

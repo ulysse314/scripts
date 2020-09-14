@@ -1,15 +1,25 @@
 #!/bin/bash
-# upload.sh [file_to_upload] [port]
+# upload.sh [ino_file_path] [port]
 
-file_to_upload="$1"
-port="$2"
+INO_FULL_PATH="$1"
+PORT="$2"
 
-if [[ "${file_to_upload}" = "" ]]; then
-  file_to_upload="/tmp/arduino_build/arduino.ino/arduino.ino.bin"
+source /etc/ulysse314/arduino_script
+
+if [[ "${INO_FULL_PATH}" = "" ]]; then
+  INO_FULL_PATH="${MAIN_DIR}/boat/arduino/arduino.ino"
 fi
-if [[ "${port}" = "" ]]; then
-  port=`/home/ulysse314/scripts/arduino/serial_ports.sh "239a_000b"`
+if [[ "${PORT}" = "" ]]; then
+  PORT=`${MAIN_DIR}/scripts/arduino/serial_ports.sh "239a_000b"`
 fi
 
-/home/ulysse314/arduino/arduino15/packages/arduino/tools/bossac/1.7.0/bossac -i -d "--port=${port}" -U true -i -e -w -v "${file_to_upload}" -R
-exit $?
+"${MAIN_DIR}/arduino/arduino-cli" --config-file "${ARDUINO_CLI_CONFIG}" upload "${INO_FULL_PATH}" --fqbn "${MAIN_BOARD_FQBN_PACKAGER}:${MAIN_BOARD_FQBN_ARCHITECTURE}:${MAIN_BOARD_FQBN_BOARD}" -p "${PORT}" --verify
+
+RESULT=`echo $?`
+if [[ "${RESULT}" == "0" ]]; then
+  echo "=== Uploaded ==="
+else
+  echo "=== Failed ==="
+fi
+
+exit "${RESULT}"

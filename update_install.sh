@@ -4,6 +4,9 @@
 set -x
 
 source /etc/ulysse314/script
+if [[ -f "/etc/ulysse314/arduino_script" ]]; then
+  source /etc/ulysse314/arduino_script
+fi
 
 update_git() {
   REPOSITORY="$1"
@@ -11,7 +14,7 @@ update_git() {
   URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
   cd "${MAIN_DIR}/${GIT_PATH}"
-  if [ ! -d "${MAIN_DIR}/${GIT_PATH}/${REPOSITORY}" ]; then
+  if [[ ! -d "${MAIN_DIR}/${GIT_PATH}/${REPOSITORY}" ]]; then
     git clone "${URL}"
   else
     cd "${REPOSITORY}"
@@ -70,13 +73,25 @@ fi
 
 echo "source update"
 date
-# arduino dirs
-update_dir arduino/app
-update_dir arduino/arduino15
-# ulysse git
+
+# Arduino dirs
+if [[ ! -z "${ARDUINO_DIR}" ]]; then
+  mkdir -p "${ARDUINO_DIR}"
+  mkdir -p "${ARDUINO_DATA_DIR}"
+  mkdir -p "${ARDUINO_USER_DIR}"
+  curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR="${ARDUINO_DIR}" sh
+  "${ARDUINO_DIR}/arduino-cli" config init --additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json --dest-dir "${ARDUINO_DATA_DIR}"
+  rm -fr ~/.arduino15
+  sed -i 's@/root/.arduino15@'"${ARDUINO_DATA_DIR}"'@g' "${ARDUINO_CLI_CONFIG}"
+  sed -i 's@/root/Arduino@'"${ARDUINO_USER_DIR}"'@g' "${ARDUINO_CLI_CONFIG}"
+  "${ARDUINO_DIR}/arduino-cli" --config-file "${ARDUINO_CLI_CONFIG}" core install adafruit:samd
+fi
+
+# Ulysse git
 update_git boat
 update_git scripts
-# arduino git
+
+# Arduino git
 update_git Arduino-MemoryFree arduino/libraries
 update_git ArduinoADS1X15 arduino/libraries
 update_git ArduinoBME680 arduino/libraries
