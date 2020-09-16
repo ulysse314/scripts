@@ -29,43 +29,20 @@ update_dir() {
   chown -R ulysse314:ulysse314 "${MAIN_DIR}/${DIR_PATH}/"
 }
 
-echo "apt update"
+echo "Apt update"
 date
 apt update
 apt upgrade -y
 apt autoremove -y
 apt install -y emacs-nox python3 autossh screen git python3-aiohttp python3-xmltodict gpsd python3-psutil python3-pip nginx libfl2 rsync ifmetric
 
-echo "pip update"
+echo "Pip update"
 date
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 pip3 install netifaces
 
-ecoh "linux update"
-date
-if [ -f "${MAIN_DIR}/scripts/linux/crontab" ]; then
-  cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
-  cat "${MAIN_DIR}/scripts/linux/crontab" >> /tmp/crontab
-  mv /tmp/crontab /etc/crontab
-fi
-if [ -f "${MAIN_DIR}/scripts/linux/dhcpcd.conf" ]; then
-  cat /etc/dhcpcd.conf | grep -v ULYSSE314 > /tmp/dhcpcd.conf
-  cat "${MAIN_DIR}/scripts/linux/dhcpcd.conf" >> /tmp/dhcpcd.conf
-  mv /tmp/dhcpcd.conf /etc/dhcpcd.conf
-fi
-
-if [ ! -f /var/www/html/munin ]; then
-  ln -s /var/cache/munin/www /var/www/html/munin
-fi
-if [ ! -e /etc/munin/plugins/ulysse314.py ]; then
-  ln -s "${MAIN_DIR}/scripts/linux/munin_plugin.py" /etc/munin/plugins/ulysse314.py
-fi
-if [ ! -f /etc/udev/rules.d/99-feather-symlink.rules ]; then
-  ln -s "${MAIN_DIR}/scripts/linux/udev-rules" /etc/udev/rules.d/99-feather-symlink.rules
-fi
-
-echo "source update"
+echo "Source update"
 date
 
 # Arduino dirs
@@ -99,7 +76,29 @@ fi
 update_git "${MAIN_DIR}/boat"
 update_git "${MAIN_DIR}/scripts"
 
-echo "some update"
+echo "Linux update"
+date
+if [ -f "${MAIN_DIR}/scripts/linux/crontab" ]; then
+  cat /etc/crontab | grep -v ULYSSE314 > /tmp/crontab
+  cat "${MAIN_DIR}/scripts/linux/crontab" >> /tmp/crontab
+  mv /tmp/crontab /etc/crontab
+fi
+if [ -f "${MAIN_DIR}/scripts/linux/dhcpcd.conf" ]; then
+  cat /etc/dhcpcd.conf | grep -v ULYSSE314 > /tmp/dhcpcd.conf
+  cat "${MAIN_DIR}/scripts/linux/dhcpcd.conf" >> /tmp/dhcpcd.conf
+  mv /tmp/dhcpcd.conf /etc/dhcpcd.conf
+fi
+if [ ! -f /var/www/html/munin ]; then
+  ln -s /var/cache/munin/www /var/www/html/munin
+fi
+if [ ! -e /etc/munin/plugins/ulysse314.py ]; then
+  ln -s "${MAIN_DIR}/scripts/linux/munin_plugin.py" /etc/munin/plugins/ulysse314.py
+fi
+if [ ! -f /etc/udev/rules.d/99-feather-symlink.rules ]; then
+  ln -s "${MAIN_DIR}/scripts/linux/udev-rules" /etc/udev/rules.d/99-feather-symlink.rules
+fi
+
+echo "Some update"
 date
 cp "${MAIN_DIR}/scripts/linux/authorized_keys" "/root/.ssh/authorized_keys"
 cp "${MAIN_DIR}/scripts/linux/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
