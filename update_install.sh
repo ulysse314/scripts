@@ -13,8 +13,8 @@ update_git() {
   GIT_PATH="$2"
   URL="https://github.com/ulysse314/${REPOSITORY}.git"
   pushd .
-  cd "${MAIN_DIR}/${GIT_PATH}"
-  if [[ ! -d "${MAIN_DIR}/${GIT_PATH}/${REPOSITORY}" ]]; then
+  cd "${GIT_PATH}"
+  if [[ ! -d "${GIT_PATH}/${REPOSITORY}" ]]; then
     git clone "${URL}"
   else
     cd "${REPOSITORY}"
@@ -64,12 +64,6 @@ fi
 if [ ! -f /etc/udev/rules.d/99-feather-symlink.rules ]; then
   ln -s "${MAIN_DIR}/scripts/linux/udev-rules" /etc/udev/rules.d/99-feather-symlink.rules
 fi
-if [ ! -d "${MAIN_DIR}/arduino" ]; then
-  mkdir "${MAIN_DIR}/arduino"
-fi
-if [ ! -d "${MAIN_DIR}/arduino/libraries" ]; then
-  mkdir "${MAIN_DIR}/arduino/libraries"
-fi
 
 echo "source update"
 date
@@ -85,23 +79,25 @@ if [[ ! -z "${ARDUINO_DIR}" ]]; then
   sed -i 's@/root/.arduino15@'"${ARDUINO_DATA_DIR}"'@g' "${ARDUINO_CLI_CONFIG}"
   sed -i 's@/root/Arduino@'"${ARDUINO_USER_DIR}"'@g' "${ARDUINO_CLI_CONFIG}"
   "${ARDUINO_DIR}/arduino-cli" --config-file "${ARDUINO_CLI_CONFIG}" core install adafruit:samd
+
+  # Arduino git
+  update_git Arduino-MemoryFree "${ARDUINO_DIR}/libraries"
+  update_git ArduinoADS1X15 "${ARDUINO_DIR}/libraries"
+  update_git ArduinoBME680 "${ARDUINO_DIR}/libraries"
+  update_git ArduinoBNO055 "${ARDUINO_DIR}/libraries"
+  update_git ArduinoBusDevice "${ARDUINO_DIR}/libraries"
+  update_git ArduinoINA219 "${ARDUINO_DIR}/libraries"
+  update_git ArduinoMTK3339 "${ARDUINO_DIR}/libraries"
+  update_git ArduinoPCA9685 "${ARDUINO_DIR}/libraries"
+  update_git OneWire "${ARDUINO_DIR}/libraries"
+  update_git SleepyDog "${ARDUINO_DIR}/libraries"
+
+  update_git ArduinoPlayground "${ARDUINO_DIR}"
 fi
 
 # Ulysse git
-update_git boat
-update_git scripts
-
-# Arduino git
-update_git Arduino-MemoryFree arduino/libraries
-update_git ArduinoADS1X15 arduino/libraries
-update_git ArduinoBME680 arduino/libraries
-update_git ArduinoBNO055 arduino/libraries
-update_git ArduinoBusDevice arduino/libraries
-update_git ArduinoINA219 arduino/libraries
-update_git ArduinoMTK3339 arduino/libraries
-update_git ArduinoPCA9685 arduino/libraries
-update_git OneWire arduino/libraries
-update_git SleepyDog arduino/libraries
+update_git "${MAIN_DIR}/boat"
+update_git "${MAIN_DIR}/scripts"
 
 echo "some update"
 date
