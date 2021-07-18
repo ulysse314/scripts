@@ -8,6 +8,12 @@ if [[ $EUID != 0 ]]; then
     exit
 fi
 
+sh -p "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}" "/usr/bin/env true"
+if [[ "$?" != "0" ]]; then
+  echo "Can't connect to backup server"
+  cat ~/.ssh/id_rsa.pub
+fi
+
 source /etc/ulysse314/script
 if [[ -f "/etc/ulysse314/arduino_script" ]]; then
   source /etc/ulysse314/arduino_script
