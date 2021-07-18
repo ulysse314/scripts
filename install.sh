@@ -51,12 +51,12 @@ if [ ! -f /etc/ulysse314/script ]; then
     exit 1
   fi
 fi
-source /etc/ulysse314/script
 if [ ! -f /etc/ulysse314/name ]; then
   echo "${BOAT_NAME}" > /etc/ulysse314/name
   echo "${BOAT_NAME}" > /etc/hostname
   hostname "${BOAT_NAME}"
 fi
+source /etc/ulysse314/script
 
 userdel -r pi
 if [ ! -d "/home/${DEFAULT_USER}" ]; then
