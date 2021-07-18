@@ -78,8 +78,8 @@ if [[ ! -z "${ARDUINO_DIR}" ]]; then
 fi
 
 # Ulysse git
-update_git "${MAIN_DIR}/boat"
-update_git "${MAIN_DIR}/scripts"
+update_git boat "${MAIN_DIR}"
+update_git scripts "${MAIN_DIR}"
 
 echo "Linux update"
 date
