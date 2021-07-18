@@ -105,6 +105,7 @@ cp "${MAIN_DIR}/scripts/linux/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys
 chown ulysse314:ulysse314 "${MAIN_DIR}/.ssh/authorized_keys"
 scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
 rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
+sed -i 's/#FSCKFIX=no/FSCKFIX=yes/g' /etc/default/rcS
 
 # Camera
 CAMERA_ENABLED="0"
