@@ -15,11 +15,6 @@ if [[ "$?" != "0" ]]; then
   exit -1
 fi
 
-source /etc/ulysse314/script
-if [[ -f "/etc/ulysse314/arduino_script" ]]; then
-  source /etc/ulysse314/arduino_script
-fi
-
 update_git() {
   REPOSITORY="$1"
   GIT_PATH="$2"
@@ -40,6 +35,18 @@ update_dir() {
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "${MAIN_DIR}/${DIR_PATH}/"
   chown -R ulysse314:ulysse314 "${MAIN_DIR}/${DIR_PATH}/"
 }
+
+source /etc/ulysse314/script
+
+echo "Ulysse314 update"
+date
+cp "${MAIN_DIR}/scripts/linux/authorized_keys" "/root/.ssh/authorized_keys"
+cp "${MAIN_DIR}/scripts/linux/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
+chown ulysse314:ulysse314 "${MAIN_DIR}/.ssh/authorized_keys"
+scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
+rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
+
+source /etc/ulysse314/arduino_script
 
 echo "Apt update"
 date
@@ -109,14 +116,6 @@ fi
 if [ ! -f /etc/udev/rules.d/99-feather-symlink.rules ]; then
   ln -s "${MAIN_DIR}/scripts/linux/udev-rules" /etc/udev/rules.d/99-feather-symlink.rules
 fi
-
-echo "Some update"
-date
-cp "${MAIN_DIR}/scripts/linux/authorized_keys" "/root/.ssh/authorized_keys"
-cp "${MAIN_DIR}/scripts/linux/authorized_keys" "${MAIN_DIR}/.ssh/authorized_keys"
-chown ulysse314:ulysse314 "${MAIN_DIR}/.ssh/authorized_keys"
-scp -P "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:known_hosts" /root/.ssh/known_hosts
-rsync -aqv --delete-after --exclude "name" -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:ulysse314" "/etc/"
 
 # Camera
 CAMERA_ENABLED="0"
