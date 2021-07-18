@@ -3,6 +3,11 @@
 
 set -x
 
+if [[ $EUID != 0 ]]; then
+    echo "Please run as root"
+    exit
+fi
+
 source /etc/ulysse314/script
 if [[ -f "/etc/ulysse314/arduino_script" ]]; then
   source /etc/ulysse314/arduino_script

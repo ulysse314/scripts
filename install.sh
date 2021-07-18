@@ -10,6 +10,11 @@ BACKUP_SERVER="$3"
 BACKUP_PORT="$4"
 PUBLIC_KEY_SERVER="$5"
 
+if [[ $EUID != 0 ]]; then
+    echo "Please run as root"
+    exit
+fi
+
 if [ "${BOAT_NAME}" == "" ]; then
   if [ ! -f /etc/ulysse314/name ]; then
     echo "No name"
