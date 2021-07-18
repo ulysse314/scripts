@@ -5,13 +5,14 @@ set -x
 
 if [[ $EUID != 0 ]]; then
     echo "Please run as root"
-    exit
+    exit -1
 fi
 
 sh -p "${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}" "/usr/bin/env true"
 if [[ "$?" != "0" ]]; then
   echo "Can't connect to backup server"
   cat ~/.ssh/id_rsa.pub
+  exit -1
 fi
 
 source /etc/ulysse314/script
