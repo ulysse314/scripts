@@ -69,6 +69,7 @@ if [[ ! -z "${ARDUINO_DIR}" ]]; then
   mkdir -p "${ARDUINO_DIR}"
   mkdir -p "${ARDUINO_DATA_DIR}"
   mkdir -p "${ARDUINO_USER_DIR}"
+  mkdir -p "${ARDUINO_LIBRARY_DIR}"
   curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR="${ARDUINO_DIR}" sh
   "${ARDUINO_DIR}/arduino-cli" config init --additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json --dest-dir "${ARDUINO_DATA_DIR}"
   rm -fr ~/.arduino15
@@ -77,16 +78,16 @@ if [[ ! -z "${ARDUINO_DIR}" ]]; then
   "${ARDUINO_DIR}/arduino-cli" --config-file "${ARDUINO_CLI_CONFIG}" core install adafruit:samd
 
   # Arduino git
-  update_git Arduino-MemoryFree "${ARDUINO_DIR}/libraries"
-  update_git ArduinoADS1X15 "${ARDUINO_DIR}/libraries"
-  update_git ArduinoBME680 "${ARDUINO_DIR}/libraries"
-  update_git ArduinoBNO055 "${ARDUINO_DIR}/libraries"
-  update_git ArduinoBusDevice "${ARDUINO_DIR}/libraries"
-  update_git ArduinoINA219 "${ARDUINO_DIR}/libraries"
-  update_git ArduinoMTK3339 "${ARDUINO_DIR}/libraries"
-  update_git ArduinoPCA9685 "${ARDUINO_DIR}/libraries"
-  update_git OneWire "${ARDUINO_DIR}/libraries"
-  update_git SleepyDog "${ARDUINO_DIR}/libraries"
+  update_git Arduino-MemoryFree "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoADS1X15 "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoBME680 "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoBNO055 "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoBusDevice "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoINA219 "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoMTK3339 "${ARDUINO_LIBRARY_DIR}"
+  update_git ArduinoPCA9685 "${ARDUINO_LIBRARY_DIR}"
+  update_git OneWire "${ARDUINO_LIBRARY_DIR}"
+  update_git SleepyDog "${ARDUINO_LIBRARY_DIR}"
 
   update_git ArduinoPlayground "${ARDUINO_DIR}"
 fi
