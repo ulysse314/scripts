@@ -3,21 +3,6 @@
 
 set -x
 
-update_git() {
-  REPOSITORY="$1"
-  GIT_PATH="$2"
-  URL="https://github.com/ulysse314/${REPOSITORY}.git"
-  pushd .
-  cd "${GIT_PATH}"
-  if [[ ! -d "${GIT_PATH}/${REPOSITORY}" ]]; then
-    git clone "${URL}"
-  else
-    cd "${REPOSITORY}"
-    git pull --rebase
-  fi
-  popd
-}
-
 update_dir() {
   DIR_PATH=`dirname $1`
   rsync -aqv --delete-after -e "ssh -p ${BACKUP_PORT}" "${BACKUP_USER}@${BACKUP_SERVER}:$1" "${MAIN_DIR}/${DIR_PATH}/"
@@ -76,25 +61,9 @@ if [[ ! -z "${ARDUINO_DIR}" ]]; then
   sed -i 's@/root/.arduino15@'"${ARDUINO_DATA_DIR}"'@g' "${ARDUINO_CLI_CONFIG}"
   sed -i 's@/root/Arduino@'"${ARDUINO_USER_DIR}"'@g' "${ARDUINO_CLI_CONFIG}"
   "${ARDUINO_DIR}/arduino-cli" --config-file "${ARDUINO_CLI_CONFIG}" core install adafruit:samd
-
-  # Arduino git
-  update_git Arduino-MemoryFree "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoADS1X15 "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoBME680 "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoBNO055 "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoBusDevice "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoINA219 "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoMTK3339 "${ARDUINO_LIBRARY_DIR}"
-  update_git ArduinoPCA9685 "${ARDUINO_LIBRARY_DIR}"
-  update_git OneWire "${ARDUINO_LIBRARY_DIR}"
-  update_git SleepyDog "${ARDUINO_LIBRARY_DIR}"
-
-  update_git ArduinoPlayground "${ARDUINO_DIR}"
 fi
 
-# Ulysse git
-update_git boat "${MAIN_DIR}"
-update_git scripts "${MAIN_DIR}"
+"${MAIN_DIR}/scripts/repository.py" update --all
 
 echo "Linux update"
 date
