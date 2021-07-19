@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import os
+import pprint
+import shutil
 import subprocess
 import sys
 
@@ -69,35 +72,49 @@ def get_repository(name, repositories):
       return repository
   return None
 
-def install_repository(repository, repositories):
-  if repository == "--all":
+def process_repository(command, repository_name, repositories, options):
+  if repository_name == "--all":
+    result = True
     for repository in repositories:
-      install_repository(repository, repositories)
-    return
+      if not process_repository(command, repository["name"], repositories, options):
+        result = False
+    return result
+  repository = get_repository(repository_name, repositories)
   path_dir = locations.get_path_location(repository["location"])
-  result = subprocess.run([ "git", "clone", "--recurse-submodules", "https://github.com/ulysse314/{}.git".format(repository["name"]) ], cwd = path_dir)
-  print("Install repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
-  return result.returncode == 0
+  repository_path_dir = os.path.join(path_dir, repository_name)
+  if command == "delete":
+    returned_value = True
+    if os.path.exists(repository_path_dir):
+      try:
+        shutil.rmtree(repository_path_dir)
+        print("Delete {} in {}".format(repository["name"], path_dir))
+      except:
+        returned_value = False
+    else:
+      print("Doesn't exist {} in {}".format(repository["name"], path_dir))
+  elif command == "update":
+    if os.path.exists(repository_path_dir):
+      result = subprocess.run([ "git", "pull", "--rebase" ], cwd = repository_path_dir)
+      if result.returncode == 0:
+        result = subprocess.run([ "git", "submodule", "update", "--init"], cwd = repository_path_dir)
+      print("Update repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
+    else:
+      if "git-ssh" in options and options["git-ssh"]:
+        git_url = "git@github.com:ulysse314/{}.git".format(repository["name"])
+      else:
+        git_url = "https://github.com/ulysse314/{}.git".format(repository["name"])
+      result = subprocess.run([ "git", "clone", "--recurse-submodules", git_url ], cwd = path_dir)
+      print("Install repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
+    returned_value = result.returncode == 0
+  return returned_value
 
-def update_repository(repository, repositories):
-  if repository == "--all":
-    for repository in repositories:
-      update_repository(repository, repositories)
-    return
-  path_dir = locations.get_path_location(repository["location"])
-  result = subprocess.run([ "git", "pull", "--rebase" ], cwd = path_dir)
-  if result.returncode == 0:
-    result = subprocess.run([ "git", "submodule", "update", "--init"], cwd = path_dir)
-  print("Update repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
-  return result.returncode == 0
-
-if len(sys.argv) != 3:
+if len(sys.argv) < 3:
   print("Need command and repository name (or --all)")
   exit(-1)
 
 command = sys.argv[1]
 repository = sys.argv[2]
-if command == "install":
-  install_repository(repository, repositories)
-elif command == "update":
-  update_repository(repository, repositories)
+options = {}
+if "--git-ssh" in sys.argv:
+  options["git-ssh"] = True
+process_repository(command, repository, repositories, options)
