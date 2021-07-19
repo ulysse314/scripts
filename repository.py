@@ -50,15 +50,15 @@ repositories = [
     "location": "arduino_library_dir",
   },
   {
-    "name": "ArduinoPlayground"
+    "name": "ArduinoPlayground",
     "location": "arduino_dir",
   },
   {
-    "name": "boat"
+    "name": "boat",
     "location": "main_dir",
   },
   {
-    "name": "scripts"
+    "name": "scripts",
     "location": "main_dir",
   },
 ]
