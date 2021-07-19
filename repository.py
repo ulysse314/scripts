@@ -75,8 +75,9 @@ def install_repository(repository, repositories):
       install_repository(repository, repositories)
     return
   path_dir = locations.get_path_location(repository["location"])
-  result = subprocess.run([ "git", "clone", "--recurse-submodules", "https://github.com/ulysse314/{}.git".format(repository) ], cwd = path_dir)
-  return result.args == 0
+  result = subprocess.run([ "git", "clone", "--recurse-submodules", "https://github.com/ulysse314/{}.git".format(repository["name"]) ], cwd = path_dir)
+  print("Install repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
+  return result.returncode == 0
 
 def update_repository(repository, repositories):
   if repository == "--all":
@@ -85,10 +86,10 @@ def update_repository(repository, repositories):
     return
   path_dir = locations.get_path_location(repository["location"])
   result = subprocess.run([ "git", "pull", "--rebase" ], cwd = path_dir)
-  if result.args != 0:
-    return False
-  result = subprocess.run([ "git", "submodule", "update", "--init"], cwd = path_dir)
-  return result.args == 0
+  if result.returncode == 0:
+    result = subprocess.run([ "git", "submodule", "update", "--init"], cwd = path_dir)
+  print("Update repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
+  return result.returncode == 0
 
 if len(sys.argv) != 3:
   print("Need command and repository name (or --all)")
