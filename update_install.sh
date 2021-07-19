@@ -63,7 +63,7 @@ if [[ ! -z "${ARDUINO_DIR}" ]]; then
   "${ARDUINO_DIR}/arduino-cli" --config-file "${ARDUINO_CLI_CONFIG}" core install adafruit:samd
 fi
 
-"${MAIN_DIR}/scripts/repository.py" update --all
+"${MAIN_DIR}/scripts/repository.py" update --all --git-ssh
 
 echo "Linux update"
 date
