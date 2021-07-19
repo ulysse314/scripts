@@ -15,18 +15,22 @@ repositories = [
   {
     "name": "Arduino-MemoryFree",
     "location": "arduino_library_dir",
+    "from": "https://github.com/mpflaga/Arduino-MemoryFree.git",
   },
   {
     "name": "ArduinoADS1X15",
     "location": "arduino_library_dir",
+    "from": "https://github.com/adafruit/Adafruit_ADS1X15.git",
   },
   {
     "name": "ArduinoBME680",
     "location": "arduino_library_dir",
+    "from": "https://github.com/adafruit/Adafruit_BME680.git",
   },
   {
     "name": "ArduinoBNO055",
     "location": "arduino_library_dir",
+    "from": "https://github.com/adafruit/Adafruit_BNO055.git",
   },
   {
     "name": "ArduinoBusDevice",
@@ -35,14 +39,17 @@ repositories = [
   {
     "name": "ArduinoINA219",
     "location": "arduino_library_dir",
+    "from": "https://github.com/flav1972/ArduinoINA219.git",
   },
   {
     "name": "ArduinoMTK3339",
     "location": "arduino_library_dir",
+    "from": "https://github.com/adafruit/Adafruit_GPS.git",
   },
   {
     "name": "ArduinoPCA9685",
     "location": "arduino_library_dir",
+    "from": "https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library.git",
   },
   {
     "name": "OneWire",
@@ -51,6 +58,7 @@ repositories = [
   {
     "name": "SleepyDog",
     "location": "arduino_library_dir",
+    "from": "https://github.com/adafruit/Adafruit_SleepyDog.git",
   },
   {
     "name": "ArduinoPlayground",
@@ -104,6 +112,8 @@ def process_repository(command, repository_name, repositories, options):
       else:
         git_url = "https://github.com/ulysse314/{}.git".format(repository["name"])
       result = subprocess.run([ "git", "clone", "--recurse-submodules", git_url ], cwd = path_dir)
+      if "from" in repository and result.returncode == 0:
+        result = subprocess.run([ "git", "remote", "add", "upstream", repository["from"] ], cwd = repository_path_dir)
       print("Install repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
     returned_value = result.returncode == 0
   return returned_value
@@ -114,7 +124,7 @@ if len(sys.argv) < 3:
 
 command = sys.argv[1]
 repository = sys.argv[2]
-options = {}
-if "--git-ssh" in sys.argv:
-  options["git-ssh"] = True
+options = {
+  "git-ssh": "--git-ssh" in sys.argv,
+}
 process_repository(command, repository, repositories, options)
