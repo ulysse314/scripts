@@ -124,12 +124,12 @@ def process_repository(command, repository_name, repositories, options):
   return returned_value
 
 if len(sys.argv) < 3:
-  print("{} <delete | update> <repository_name | --all>".format(sys.argv[0]))
+  print("{} <delete | update> <repository_name | --all> [--git-ssh]".format(sys.argv[0]))
   exit(-1)
 
 command = sys.argv[1]
 repository = sys.argv[2]
 options = {
-  "git-ssh": True # "--git-ssh" in sys.argv,
+  "git-ssh": "--git-ssh" in sys.argv,
 }
 process_repository(command, repository, repositories, options)
