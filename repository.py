@@ -104,6 +104,9 @@ def process_repository(command, repository_name, repositories, options):
         result = False
     return result
   repository = get_repository(repository_name, repositories)
+  if repository is None:
+    print("{} is unknown".format(repository_name))
+    return False
   path_dir = locations.get_path_location(repository["location"])
   repository_path_dir = os.path.join(path_dir, repository_name)
   if command == "delete":
