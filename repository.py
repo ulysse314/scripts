@@ -11,6 +11,21 @@ if "/etc/ulysse314" not in sys.path:
 
 import locations
 
+class Repository:
+  def __init__(self, name, location, forked_from):
+    self.name = name
+    self.location = location
+    self.forked_from = forked_from
+
+  def get_name(self):
+    return self.name
+
+  def get_path(self):
+    return locations.get_path_location(self.location)
+
+  def get_forked_from(self):
+    return self.forked_from
+
 HTTP_URL_TYPE = "http"
 SSH_URL_TYPE = "git"
 URL_PER_TYPE = {
@@ -19,121 +34,75 @@ URL_PER_TYPE = {
 }
 
 repositories = [
-  {
-    "name": "Arduino-MemoryFree",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/mpflaga/Arduino-MemoryFree.git",
-  },
-  {
-    "name": "ArduinoADS1X15",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/adafruit/Adafruit_ADS1X15.git",
-  },
-  {
-    "name": "ArduinoBME680",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/adafruit/Adafruit_BME680.git",
-  },
-  {
-    "name": "ArduinoBNO055",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/adafruit/Adafruit_BNO055.git",
-  },
-  {
-    "name": "ArduinoBusDevice",
-    "location": "arduino_library_dir",
-  },
-  {
-    "name": "ArduinoINA219",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/flav1972/ArduinoINA219.git",
-  },
-  {
-    "name": "ArduinoMTK3339",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/adafruit/Adafruit_GPS.git",
-  },
-  {
-    "name": "ArduinoPCA9685",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library.git",
-  },
-  {
-    "name": "OneWire",
-    "location": "arduino_library_dir",
-  },
-  {
-    "name": "SleepyDog",
-    "location": "arduino_library_dir",
-    "from": "https://github.com/adafruit/Adafruit_SleepyDog.git",
-  },
-  {
-    "name": "ArduinoPlayground",
-    "location": "arduino_dir",
-  },
-  {
-    "name": "mavlink",
-    "location": "main_dir",
-    "from": "https://github.com/mavlink/mavlink.git",
-  },
-  {
-    "name": "boat",
-    "location": "main_dir",
-  },
-  {
-    "name": "scripts",
-    "location": "main_dir",
-  },
+  Repository("Arduino-MemoryFree", "arduino_library_dir", "https://github.com/mpflaga/Arduino-MemoryFree.git"),
+  Repository("ArduinoADS1X15", "arduino_library_dir", "https://github.com/adafruit/Adafruit_ADS1X15.git"),
+  Repository("ArduinoBME680", "arduino_library_dir", "https://github.com/adafruit/Adafruit_BME680.git"),
+  Repository("ArduinoBNO055", "arduino_library_dir", "https://github.com/adafruit/Adafruit_BNO055.git"),
+  Repository("ArduinoBusDevice", "arduino_library_dir", None),
+  Repository("ArduinoINA219", "arduino_library_dir", "https://github.com/flav1972/ArduinoINA219.git"),
+  Repository("ArduinoMTK3339", "arduino_library_dir", "https://github.com/adafruit/Adafruit_GPS.git"),
+  Repository("ArduinoPCA9685", "arduino_library_dir", "https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library.git"),
+  Repository("OneWire", "arduino_library_dir", None),
+  Repository("SleepyDog", "arduino_library_dir", "https://github.com/adafruit/Adafruit_SleepyDog.git"),
+  Repository("ArduinoPlayground", "arduino_dir", None),
+  Repository("mavlink", "main_dir", "https://github.com/mavlink/mavlink.git"),
+  Repository("boat", "main_dir", None),
+  Repository("scripts", "main_dir", None)
 ]
 
 def get_repository(name, repositories):
   for repository in repositories:
-    if name == repository["name"]:
+    if name == repository.get_name():
       return repository
   return None
 
 def get_remote_url(repository, type):
   git_url = URL_PER_TYPE[type]
-  return git_url.format(repository["name"])
+  return git_url.format(repository.get_name())
 
 def process_repository(command, repository_name, repositories, options):
   if repository_name == "--all":
     result = True
     for repository in repositories:
-      if not process_repository(command, repository["name"], repositories, options):
+      if not process_repository(command, repository.get_name(), repositories, options):
         result = False
     return result
   repository = get_repository(repository_name, repositories)
   if repository is None:
     print("{} is unknown".format(repository_name))
     return False
-  path_dir = locations.get_path_location(repository["location"])
+  path_dir = repository.get_path()
   repository_path_dir = os.path.join(path_dir, repository_name)
   if command == "delete":
     returned_value = True
     if os.path.exists(repository_path_dir):
       try:
         shutil.rmtree(repository_path_dir)
-        print("Delete {} in {}".format(repository["name"], path_dir))
+        print("Delete {} in {}".format(repository.get_name(), path_dir))
       except:
         returned_value = False
     else:
-      print("Doesn't exist {} in {}".format(repository["name"], path_dir))
+      print("Doesn't exist {} in {}".format(repository.get_name(), path_dir))
   elif command == "update":
     if os.path.exists(repository_path_dir):
       result = subprocess.run([ "git", "pull", "--rebase" ], cwd = repository_path_dir)
       if result.returncode == 0:
         result = subprocess.run([ "git", "submodule", "update", "--init"], cwd = repository_path_dir)
-      print("Update repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
+      print("Update repository {} in {}, result {}".format(repository.get_name(), path_dir, result.returncode))
     else:
       git_url = get_remote_url(repository, options["url-type"])
       result = subprocess.run([ "git", "clone", "--recurse-submodules", git_url ], cwd = path_dir)
-      if "from" in repository and result.returncode == 0:
-        result = subprocess.run([ "git", "remote", "add", "upstream", repository["from"] ], cwd = repository_path_dir)
-      print("Install repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
+      if repository.get_forked_from() is not None and result.returncode == 0:
+        result = subprocess.run([ "git", "remote", "add", "upstream", repository.get_forked_from() ], cwd = repository_path_dir)
+      print("Install repository {} in {}, result {}".format(repository.get_name(), path_dir, result.returncode))
+    returned_value = result.returncode == 0
+  elif command == "sshurl":
+    origin_url = get_remote_url(repository, SSH_URL_TYPE)
+    result = subprocess.run([ "git", "remote", "set-url", "origin",  origin_url], cwd = repository_path_dir)
+    print("Update repository {} to origin {}, result {}".format(repository.get_name(), origin_url, result.returncode))
     returned_value = result.returncode == 0
   elif command == "info":
-    print("{} location: {}".format(repository["name"], locations.get_path_location(repository["location"])))
+    print("{} location: {}".format(repository.get_name(), repository.get_path()))
     for url_type in URL_PER_TYPE:
       print("  + {}".format(get_remote_url(repository, url_type)))
     returned_value = True
