@@ -148,4 +148,6 @@ repository = sys.argv[2]
 options = {
   "url-type": SSH_URL_TYPE if "--git-ssh" in sys.argv else HTTP_URL_TYPE,
 }
-process_repository(command, repository, repositories, options)
+result = process_repository(command, repository, repositories, options)
+exit(0 if result else -1)
+
