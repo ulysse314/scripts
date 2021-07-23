@@ -11,6 +11,13 @@ if "/etc/ulysse314" not in sys.path:
 
 import locations
 
+HTTP_URL_TYPE = "http"
+SSH_URL_TYPE = "git"
+URL_PER_TYPE = {
+  SSH_URL_TYPE: "git@github.com:ulysse314/{}.git",
+  HTTP_URL_TYPE: "https://github.com/ulysse314/{}.git",
+}
+
 repositories = [
   {
     "name": "Arduino-MemoryFree",
@@ -85,6 +92,10 @@ def get_repository(name, repositories):
       return repository
   return None
 
+def get_remote_url(repository, type):
+  git_url = URL_PER_TYPE[type]
+  return git_url.format(repository["name"])
+
 def process_repository(command, repository_name, repositories, options):
   if repository_name == "--all":
     result = True
@@ -112,24 +123,26 @@ def process_repository(command, repository_name, repositories, options):
         result = subprocess.run([ "git", "submodule", "update", "--init"], cwd = repository_path_dir)
       print("Update repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
     else:
-      if "git-ssh" in options and options["git-ssh"]:
-        git_url = "git@github.com:ulysse314/{}.git".format(repository["name"])
-      else:
-        git_url = "https://github.com/ulysse314/{}.git".format(repository["name"])
+      git_url = get_remote_url(repository, options["url-type"])
       result = subprocess.run([ "git", "clone", "--recurse-submodules", git_url ], cwd = path_dir)
       if "from" in repository and result.returncode == 0:
         result = subprocess.run([ "git", "remote", "add", "upstream", repository["from"] ], cwd = repository_path_dir)
       print("Install repository {} in {}, result {}".format(repository["name"], path_dir, result.returncode))
     returned_value = result.returncode == 0
+  elif command == "info":
+    print("{} location: {}".format(repository["name"], locations.get_path_location(repository["location"])))
+    for url_type in URL_PER_TYPE:
+      print("  + {}".format(get_remote_url(repository, url_type)))
+    returned_value = True
   return returned_value
 
 if len(sys.argv) < 3:
-  print("{} <delete | update> <repository_name | --all> [--git-ssh]".format(sys.argv[0]))
+  print("{} <delete | update | info> <repository_name | --all> [--git-ssh]".format(sys.argv[0]))
   exit(-1)
 
 command = sys.argv[1]
 repository = sys.argv[2]
 options = {
-  "git-ssh": "--git-ssh" in sys.argv,
+  "url-type": SSH_URL_TYPE if "--git-ssh" in sys.argv else HTTP_URL_TYPE,
 }
 process_repository(command, repository, repositories, options)
