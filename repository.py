@@ -105,11 +105,13 @@ def process_repository(command, repository_name, repositories, options):
     print("{} location: {}".format(repository.get_name(), repository.get_path()))
     for url_type in URL_PER_TYPE:
       print("  + {}".format(get_remote_url(repository, url_type)))
+    if repository.get_forked_from() is not None:
+      print("    Forked from {}".format(repository.get_forked_from()))
     returned_value = True
   return returned_value
 
 if len(sys.argv) < 3:
-  print("{} <delete | update | info> <repository_name | --all> [--git-ssh]".format(sys.argv[0]))
+  print("{} <delete | update | info | sshurl> <repository_name | --all> [--git-ssh]".format(sys.argv[0]))
   exit(-1)
 
 command = sys.argv[1]
