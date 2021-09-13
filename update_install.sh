@@ -45,6 +45,7 @@ date
 pip3 install pyserial-asyncio
 pip3 install adafruit-pca9685
 pip3 install netifaces
+pip3 install future
 
 echo "Source update"
 date
