@@ -86,6 +86,7 @@ fi
 if [ ! -f /etc/udev/rules.d/99-feather-symlink.rules ]; then
   ln -s "${MAIN_DIR}/scripts/linux/udev-rules" /etc/udev/rules.d/99-feather-symlink.rules
 fi
+sed -i 's/#\?PasswordAuthentication .*/PasswordAuthentication no/' /etc/ssh/sshd_config
 
 # Camera
 CAMERA_ENABLED="0"
